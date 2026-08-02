@@ -2,10 +2,30 @@
   "common": {
     "appName": "סטיילינג לארון הבגדים",
     "tagline": "הארון שלך, בעיצוב של אנשים שאתה סומך עליהם.",
+    "logout": "התנתקות",
     "languageSwitcher": {
       "label": "שפה",
       "en": "English",
       "he": "עברית"
     }
+  },
+  "auth": {
+    "loginTitle": "התחברות",
+    "signupTitle": "יצירת חשבון",
+    "email": "אימייל",
+    "password": "סיסמה",
+    "loginButton": "התחברות",
+    "signupButton": "הרשמה",
+    "googleButton": "המשך עם Google",
+    "noAccount": "אין לך חשבון עדיין?",
+    "haveAccount": "כבר יש לך חשבון?",
+    "signupLink": "הרשמה",
+    "loginLink": "התחברות",
+    "emailInvalid": "יש להזין כתובת אימייל תקינה.",
+    "passwordMin": "הסיסמה חייבת להכיל לפחות 8 תווים."
+  },
+  "app": {
+    "dashboardTitle": "לוח בקרה",
+    "defaultWardrobe": "ארון ברירת מחדל"
   }
 }
