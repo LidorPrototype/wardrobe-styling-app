@@ -2,10 +2,30 @@
   "common": {
     "appName": "Wardrobe Styling",
     "tagline": "Your wardrobe, styled by people you trust.",
+    "logout": "Log out",
     "languageSwitcher": {
       "label": "Language",
       "en": "English",
       "he": "עברית"
     }
+  },
+  "auth": {
+    "loginTitle": "Log in",
+    "signupTitle": "Create your account",
+    "email": "Email",
+    "password": "Password",
+    "loginButton": "Log in",
+    "signupButton": "Sign up",
+    "googleButton": "Continue with Google",
+    "noAccount": "No account yet?",
+    "haveAccount": "Already have an account?",
+    "signupLink": "Sign up",
+    "loginLink": "Log in",
+    "emailInvalid": "Enter a valid email address.",
+    "passwordMin": "Password must be at least 8 characters."
+  },
+  "app": {
+    "dashboardTitle": "Dashboard",
+    "defaultWardrobe": "Default wardrobe"
   }
 }
