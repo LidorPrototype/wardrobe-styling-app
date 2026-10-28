@@ -1,0 +1,11 @@
+{
+  "common": {
+    "appName": "Wardrobe Styling",
+    "tagline": "Your wardrobe, styled by people you trust.",
+    "languageSwitcher": {
+      "label": "Language",
+      "en": "English",
+      "he": "עברית"
+    }
+  }
+}
