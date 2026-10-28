@@ -5,6 +5,7 @@ import { requireUser } from "@/lib/auth/requireUser";
 import { createClient } from "@/lib/supabase/server";
 import { signImageUrl } from "@/lib/wardrobe/images";
 import { ClothingItemForm } from "@/components/wardrobe/ClothingItemForm";
+import { BackArrow } from "@/components/layout/BackArrow";
 
 export default async function EditClothingItemPage({
   params,
@@ -42,7 +43,7 @@ export default async function EditClothingItemPage({
           href="/app/wardrobe"
           className="text-sm text-zinc-600 underline dark:text-zinc-400"
         >
-          ← {t("backToWardrobe")}
+          <BackArrow /> {t("backToWardrobe")}
         </Link>
         <h1 className="mt-2 text-2xl font-semibold text-zinc-950 dark:text-zinc-50">
           {t("editItemTitle")}

@@ -3,6 +3,14 @@
     "appName": "Wardrobe Styling",
     "tagline": "Your wardrobe, styled by people you trust.",
     "logout": "Log out",
+    "optional": "optional",
+    "selectPlaceholder": "Select…",
+    "notSet": "—",
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
     "languageSwitcher": {
       "label": "Language",
       "en": "English",
@@ -27,7 +35,8 @@
   "app": {
     "dashboardTitle": "Dashboard",
     "defaultWardrobe": "Default wardrobe",
-    "navWardrobe": "Wardrobe"
+    "navWardrobe": "Wardrobe",
+    "navRequests": "Requests"
   },
   "wardrobe": {
     "title": "Wardrobe",
@@ -53,13 +62,6 @@
     "tags": "Tags",
     "tagsHint": "Press Enter or comma to add a tag",
     "removeTag": "Remove tag",
-    "optional": "optional",
-    "notSet": "—",
-    "save": "Save",
-    "saving": "Saving…",
-    "cancel": "Cancel",
-    "edit": "Edit",
-    "delete": "Delete",
     "archive": "Archive",
     "unarchive": "Restore",
     "archived": "Archived",
@@ -70,7 +72,6 @@
     "allTags": "All tags",
     "clearFilters": "Clear filters",
     "showArchived": "Show archived",
-    "selectPlaceholder": "Select…",
     "errors": {
       "imageRequired": "Please choose a photo.",
       "imageTooLarge": "Image must be 5 MB or smaller.",
@@ -81,6 +82,41 @@
       "uploadFailed": "Upload failed. Please try again.",
       "saveFailed": "Could not save the item. Please try again.",
       "notFound": "Item not found."
+    }
+  },
+  "requests": {
+    "title": "Styling requests",
+    "addRequest": "New request",
+    "newRequestTitle": "New styling request",
+    "editRequestTitle": "Edit request",
+    "backToRequests": "Back to requests",
+    "backToRequest": "Back to request",
+    "empty": "No styling requests yet.",
+    "emptyHint": "Create one to start collecting outfit ideas.",
+    "requestCount": "{count, plural, =0 {No requests} one {# request} other {# requests}}",
+    "openSection": "Open",
+    "finishedSection": "Finished",
+    "titleField": "What is this for?",
+    "titlePlaceholder": "e.g. Sarah's wedding",
+    "occasion": "Occasion",
+    "noOccasion": "No occasion set",
+    "eventAt": "Date and time",
+    "notes": "Notes",
+    "notesPlaceholder": "Anything your stylists should know — dress code, weather, what you want to avoid.",
+    "finish": "Mark as finished",
+    "reopen": "Reopen",
+    "finishedNotice": "This request is finished and can no longer be edited. Reopen it to make changes.",
+    "confirmDelete": "Delete this request permanently? This cannot be undone.",
+    "availableItems": "Available items",
+    "availableItemsHint": "Everything currently in your wardrobe is available for this request.",
+    "noWardrobeItems": "Your wardrobe is empty — add items so there is something to style.",
+    "errors": {
+      "titleRequired": "Please enter a title.",
+      "eventAtInvalid": "Please enter a valid date and time.",
+      "invalidValue": "Invalid value.",
+      "saveFailed": "Could not save the request. Please try again.",
+      "finishedReadOnly": "This request is finished. Reopen it before editing.",
+      "notFound": "Request not found."
     }
   },
   "enums": {
@@ -159,6 +195,22 @@
       "smart_casual": "Smart casual",
       "formal": "Formal",
       "sport": "Sport"
+    },
+    "occasion": {
+      "work": "Work",
+      "interview": "Job interview",
+      "wedding": "Wedding",
+      "formal_event": "Formal event",
+      "party": "Party",
+      "date": "Date",
+      "casual_outing": "Casual outing",
+      "travel": "Travel",
+      "sport": "Sport",
+      "other": "Other"
+    },
+    "requestStatus": {
+      "open": "Open",
+      "finished": "Finished"
     }
   }
 }

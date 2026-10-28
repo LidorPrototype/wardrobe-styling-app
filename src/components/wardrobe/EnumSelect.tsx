@@ -18,7 +18,13 @@ export function EnumSelect({
   error,
 }: {
   name: string;
-  namespace: "category" | "subcategory" | "color" | "season" | "formality";
+  namespace:
+    | "category"
+    | "subcategory"
+    | "color"
+    | "season"
+    | "formality"
+    | "occasion";
   options: readonly string[];
   label: string;
   value?: string;
@@ -27,7 +33,7 @@ export function EnumSelect({
   error?: string;
 }) {
   const tEnum = useTranslations(`enums.${namespace}`);
-  const tWardrobe = useTranslations("wardrobe");
+  const tCommon = useTranslations("common");
 
   const common = {
     id: name,
@@ -43,7 +49,7 @@ export function EnumSelect({
         {label}
         {!required && (
           <span className="ms-1 text-xs text-zinc-400">
-            ({tWardrobe("optional")})
+            ({tCommon("optional")})
           </span>
         )}
       </span>
@@ -53,7 +59,7 @@ export function EnumSelect({
           ? { value: value ?? "", onChange: (e) => onChange(e.target.value) }
           : { defaultValue: value ?? "" })}
       >
-        <option value="">{tWardrobe("selectPlaceholder")}</option>
+        <option value="">{tCommon("selectPlaceholder")}</option>
         {options.map((code) => (
           <option key={code} value={code}>
             {tEnum(code)}

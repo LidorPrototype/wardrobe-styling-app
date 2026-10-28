@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/lib/i18n/routing";
 import { requireUser } from "@/lib/auth/requireUser";
 import { ClothingItemForm } from "@/components/wardrobe/ClothingItemForm";
+import { BackArrow } from "@/components/layout/BackArrow";
 
 export default async function NewClothingItemPage({
   params,
@@ -19,7 +20,7 @@ export default async function NewClothingItemPage({
           href="/app/wardrobe"
           className="text-sm text-zinc-600 underline dark:text-zinc-400"
         >
-          ← {t("backToWardrobe")}
+          <BackArrow /> {t("backToWardrobe")}
         </Link>
         <h1 className="mt-2 text-2xl font-semibold text-zinc-950 dark:text-zinc-50">
           {t("newItemTitle")}

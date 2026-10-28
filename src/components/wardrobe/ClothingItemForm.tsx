@@ -53,6 +53,7 @@ export function ClothingItemForm({
 }) {
   const locale = useLocale();
   const t = useTranslations("wardrobe");
+  const tCommon = useTranslations("common");
   const tErrors = useTranslations("wardrobe.errors");
 
   const action = itemId
@@ -90,7 +91,9 @@ export function ClothingItemForm({
         <span className="text-zinc-700 dark:text-zinc-300">
           {t("image")}
           {itemId && (
-            <span className="ms-1 text-xs text-zinc-400">({t("optional")})</span>
+            <span className="ms-1 text-xs text-zinc-400">
+              ({tCommon("optional")})
+            </span>
           )}
         </span>
         <input
@@ -187,14 +190,18 @@ export function ClothingItemForm({
         <label className="flex flex-col gap-1 text-sm">
           <span className="text-zinc-700 dark:text-zinc-300">
             {t("brand")}
-            <span className="ms-1 text-xs text-zinc-400">({t("optional")})</span>
+            <span className="ms-1 text-xs text-zinc-400">
+              ({tCommon("optional")})
+            </span>
           </span>
           <input name="brand" defaultValue={v.brand} className={inputClass} />
         </label>
         <label className="flex flex-col gap-1 text-sm">
           <span className="text-zinc-700 dark:text-zinc-300">
             {t("size")}
-            <span className="ms-1 text-xs text-zinc-400">({t("optional")})</span>
+            <span className="ms-1 text-xs text-zinc-400">
+              ({tCommon("optional")})
+            </span>
           </span>
           <input name="size" defaultValue={v.size} className={inputClass} />
         </label>
@@ -205,7 +212,9 @@ export function ClothingItemForm({
       <label className="flex flex-col gap-1 text-sm">
         <span className="text-zinc-700 dark:text-zinc-300">
           {t("notes")}
-          <span className="ms-1 text-xs text-zinc-400">({t("optional")})</span>
+          <span className="ms-1 text-xs text-zinc-400">
+            ({tCommon("optional")})
+          </span>
         </span>
         <textarea
           name="notes"
@@ -221,13 +230,13 @@ export function ClothingItemForm({
           disabled={pending}
           className="rounded-md bg-zinc-950 px-4 py-2 font-medium text-white disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-950"
         >
-          {pending ? t("saving") : t("save")}
+          {pending ? tCommon("saving") : tCommon("save")}
         </button>
         <Link
           href="/app/wardrobe"
           className="text-sm text-zinc-600 underline dark:text-zinc-400"
         >
-          {t("cancel")}
+          {tCommon("cancel")}
         </Link>
       </div>
     </form>
