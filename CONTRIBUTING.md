@@ -18,16 +18,29 @@ feat: invite links for styling requests
 fix: keep the email when a login fails
 ```
 
-| Type | Use for | Release |
-| --- | --- | --- |
-| `feat` | A new user-facing capability | minor (0.**7**.0) |
-| `fix` | A bug fix | patch (0.6.**1**) |
-| `deps` | A production dependency update | patch |
-| `perf`, `refactor`, `docs`, `chore` | Other changes worth listing in the changelog | patch |
-| `test`, `ci` | Tests and CI only | none on its own |
+### Types
 
-A breaking change (`feat!:` or a `BREAKING CHANGE:` footer) bumps the major
-version.
+| Type | Short for | Meaning | Example | Release |
+| --- | --- | --- | --- | --- |
+| `feat` | feature | Something new a user can do | `feat: invite links for styling requests` | minor (0.**7**.0) |
+| `fix` | bug fix | Something that was broken now works | `fix: keep the email when a login fails` | patch (0.6.**1**) |
+| `deps` | dependencies | A library the app ships with was updated | `deps: bump next from 16.4.3 to 16.4.5` | patch |
+| `perf` | performance | Same behavior, faster or lighter | `perf: sign wardrobe images in one request` | patch |
+| `refactor` | refactoring | Code restructured, behavior unchanged | `refactor: share the guest page layout` | patch |
+| `docs` | documentation | README, CONTRIBUTING, or other docs | `docs: explain the release types` | patch |
+| `chore` | chore | Upkeep that isn't a feature or fix: config, tooling, dev dependencies | `chore: trim comments` | patch |
+| `test` | tests | Tests added or changed, no app change | `test: cover the lockout rule` | none on its own |
+| `ci` | continuous integration | GitHub Actions workflows | `ci: bump actions/checkout to v7` | none on its own |
+| `revert` | revert | Undoes an earlier change | `revert: feat: invite links` | patch |
+
+An optional scope in parentheses narrows the area, e.g. `fix(guests): …`.
+
+### Breaking changes
+
+A change that breaks existing behavior — something that used to work no
+longer does, or now works differently — adds `!` after the type
+(`feat!: …`) or a `BREAKING CHANGE:` line in the description. It bumps the
+major version (**1**.0.0).
 
 ## Releases
 
