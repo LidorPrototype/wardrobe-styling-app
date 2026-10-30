@@ -32,6 +32,12 @@ export async function AppShell({
           >
             {tApp("navWardrobe")}
           </Link>
+          <Link
+            href="/app/requests"
+            className="text-sm text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50"
+          >
+            {tApp("navRequests")}
+          </Link>
         </div>
         <div className="flex items-center gap-4">
           <LanguageSwitcher />

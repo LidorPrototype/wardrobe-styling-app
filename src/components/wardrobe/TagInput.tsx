@@ -10,6 +10,7 @@ import { useTranslations } from "next-intl";
  */
 export function TagInput({ defaultTags = [] }: { defaultTags?: string[] }) {
   const t = useTranslations("wardrobe");
+  const tCommon = useTranslations("common");
   const [tags, setTags] = useState<string[]>(defaultTags);
   const [draft, setDraft] = useState("");
 
@@ -38,7 +39,9 @@ export function TagInput({ defaultTags = [] }: { defaultTags?: string[] }) {
     <div className="flex flex-col gap-1 text-sm">
       <span className="text-zinc-700 dark:text-zinc-300">
         {t("tags")}
-        <span className="ms-1 text-xs text-zinc-400">({t("optional")})</span>
+        <span className="ms-1 text-xs text-zinc-400">
+          ({tCommon("optional")})
+        </span>
       </span>
 
       <div className="flex flex-wrap items-center gap-2 rounded-md border border-zinc-300 bg-white px-2 py-2 dark:border-zinc-700 dark:bg-zinc-900">

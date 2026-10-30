@@ -3,6 +3,14 @@
     "appName": "סטיילינג לארון הבגדים",
     "tagline": "הארון שלך, בעיצוב של אנשים שאתה סומך עליהם.",
     "logout": "התנתקות",
+    "optional": "רשות",
+    "selectPlaceholder": "בחר…",
+    "notSet": "—",
+    "save": "שמירה",
+    "saving": "שומר…",
+    "cancel": "ביטול",
+    "edit": "עריכה",
+    "delete": "מחיקה",
     "languageSwitcher": {
       "label": "שפה",
       "en": "English",
@@ -27,7 +35,8 @@
   "app": {
     "dashboardTitle": "לוח בקרה",
     "defaultWardrobe": "ארון ברירת מחדל",
-    "navWardrobe": "הארון"
+    "navWardrobe": "הארון",
+    "navRequests": "בקשות"
   },
   "wardrobe": {
     "title": "הארון",
@@ -53,13 +62,6 @@
     "tags": "תגיות",
     "tagsHint": "לחץ Enter או פסיק כדי להוסיף תגית",
     "removeTag": "הסרת תגית",
-    "optional": "רשות",
-    "notSet": "—",
-    "save": "שמירה",
-    "saving": "שומר…",
-    "cancel": "ביטול",
-    "edit": "עריכה",
-    "delete": "מחיקה",
     "archive": "העברה לארכיון",
     "unarchive": "שחזור",
     "archived": "בארכיון",
@@ -70,7 +72,6 @@
     "allTags": "כל התגיות",
     "clearFilters": "ניקוי סינון",
     "showArchived": "הצג פריטים בארכיון",
-    "selectPlaceholder": "בחר…",
     "errors": {
       "imageRequired": "יש לבחור תמונה.",
       "imageTooLarge": "התמונה חייבת להיות עד 5 מגה-בייט.",
@@ -81,6 +82,41 @@
       "uploadFailed": "ההעלאה נכשלה. נסה שוב.",
       "saveFailed": "לא ניתן לשמור את הפריט. נסה שוב.",
       "notFound": "הפריט לא נמצא."
+    }
+  },
+  "requests": {
+    "title": "בקשות סטיילינג",
+    "addRequest": "בקשה חדשה",
+    "newRequestTitle": "בקשת סטיילינג חדשה",
+    "editRequestTitle": "עריכת בקשה",
+    "backToRequests": "חזרה לבקשות",
+    "backToRequest": "חזרה לבקשה",
+    "empty": "אין עדיין בקשות סטיילינג.",
+    "emptyHint": "צור בקשה כדי להתחיל לאסוף רעיונות ללוק.",
+    "requestCount": "{count, plural, =0 {אין בקשות} one {בקשה אחת} other {# בקשות}}",
+    "openSection": "פתוחות",
+    "finishedSection": "הסתיימו",
+    "titleField": "למה הבקשה?",
+    "titlePlaceholder": "למשל: החתונה של שרה",
+    "occasion": "אירוע",
+    "noOccasion": "לא הוגדר אירוע",
+    "eventAt": "תאריך ושעה",
+    "notes": "הערות",
+    "notesPlaceholder": "כל מה שכדאי שהסטייליסטים ידעו — קוד לבוש, מזג אוויר, ממה להימנע.",
+    "finish": "סימון כהסתיימה",
+    "reopen": "פתיחה מחדש",
+    "finishedNotice": "הבקשה הסתיימה ולא ניתן לערוך אותה. פתח אותה מחדש כדי לבצע שינויים.",
+    "confirmDelete": "למחוק את הבקשה לצמיתות? לא ניתן לבטל פעולה זו.",
+    "availableItems": "פריטים זמינים",
+    "availableItemsHint": "כל מה שנמצא כרגע בארון שלך זמין לבקשה הזו.",
+    "noWardrobeItems": "הארון שלך ריק — הוסף פריטים כדי שיהיה ממה להרכיב לוק.",
+    "errors": {
+      "titleRequired": "יש להזין כותרת.",
+      "eventAtInvalid": "יש להזין תאריך ושעה תקינים.",
+      "invalidValue": "ערך לא תקין.",
+      "saveFailed": "לא ניתן לשמור את הבקשה. נסה שוב.",
+      "finishedReadOnly": "הבקשה הסתיימה. פתח אותה מחדש לפני העריכה.",
+      "notFound": "הבקשה לא נמצאה."
     }
   },
   "enums": {
@@ -159,6 +195,22 @@
       "smart_casual": "סמארט קז'ואל",
       "formal": "רשמי",
       "sport": "ספורט"
+    },
+    "occasion": {
+      "work": "עבודה",
+      "interview": "ראיון עבודה",
+      "wedding": "חתונה",
+      "formal_event": "אירוע רשמי",
+      "party": "מסיבה",
+      "date": "דייט",
+      "casual_outing": "יציאה יומיומית",
+      "travel": "טיול",
+      "sport": "ספורט",
+      "other": "אחר"
+    },
+    "requestStatus": {
+      "open": "פתוחה",
+      "finished": "הסתיימה"
     }
   }
 }

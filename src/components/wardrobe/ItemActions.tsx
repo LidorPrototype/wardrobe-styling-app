@@ -15,6 +15,7 @@ export function ItemActions({
   isArchived: boolean;
 }) {
   const t = useTranslations("wardrobe");
+  const tCommon = useTranslations("common");
   const [pending, startTransition] = useTransition();
 
   return (
@@ -23,7 +24,7 @@ export function ItemActions({
         href={`/app/wardrobe/${itemId}`}
         className="text-zinc-600 underline dark:text-zinc-400"
       >
-        {t("edit")}
+        {tCommon("edit")}
       </Link>
 
       <button
@@ -51,7 +52,7 @@ export function ItemActions({
         }}
         className="text-red-600 underline disabled:opacity-50"
       >
-        {t("delete")}
+        {tCommon("delete")}
       </button>
     </div>
   );
