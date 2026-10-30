@@ -1,0 +1,27 @@
+version: 2
+updates:
+  - package-ecosystem: npm # also covers pnpm-lock.yaml
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      # One PR for routine updates instead of one per package.
+      minor-and-patch:
+        update-types: [minor, patch]
+    ignore:
+      # Framework majors change APIs and conventions (see AGENTS.md);
+      # upgrade those deliberately, not from a bot PR.
+      - dependency-name: next
+        update-types: [version-update:semver-major]
+      - dependency-name: eslint-config-next
+        update-types: [version-update:semver-major]
+      - dependency-name: react
+        update-types: [version-update:semver-major]
+      - dependency-name: react-dom
+        update-types: [version-update:semver-major]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

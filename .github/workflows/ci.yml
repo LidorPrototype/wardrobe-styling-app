@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Lint, types, tests, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6 # version comes from "packageManager"
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      # The lockfile must not record where packages were downloaded from:
+      # a machine-specific registry (e.g. a private mirror) would otherwise
+      # leak its hostname into a public repo. pnpm-lock is the only lockfile.
+      - name: Dependency sources
+        run: |
+          status=0
+          for f in package-lock.json yarn.lock .npmrc; do
+            if git ls-files --error-unmatch "$f" >/dev/null 2>&1; then
+              echo "::error file=$f::$f must not be committed (pnpm-lock.yaml is the only lockfile)"
+              status=1
+            fi
+          done
+          if grep -nE '^\s+tarball:' pnpm-lock.yaml; then
+            echo "::error file=pnpm-lock.yaml::lockfile records registry tarball URLs"
+            status=1
+          fi
+          exit $status
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type check
+        run: pnpm typecheck
+
+      - name: Unit tests
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+        env:
+          # Placeholders: the build never contacts Supabase, it only needs
+          # the variables to exist.
+          NEXT_PUBLIC_SUPABASE_URL: https://ci-placeholder.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ci-placeholder

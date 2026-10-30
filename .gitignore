@@ -10,6 +10,12 @@
 !.yarn/releases
 !.yarn/versions
 
+# pnpm is the only package manager — other lockfiles and per-machine registry
+# config would record where packages were downloaded from (enforced in CI)
+package-lock.json
+yarn.lock
+.npmrc
+
 # testing
 /coverage
 
