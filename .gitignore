@@ -10,6 +10,11 @@
 !.yarn/releases
 !.yarn/versions
 
+# pnpm only; these can record the local registry host (also enforced in CI)
+package-lock.json
+yarn.lock
+.npmrc
+
 # testing
 /coverage
 
