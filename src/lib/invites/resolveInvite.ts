@@ -3,7 +3,7 @@ import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
 import {
   classifyInvite,
-  hashInviteToken,
+  hashSecretToken,
   isWellFormedInviteToken,
 } from "@/lib/invites/token";
 import { guestSafeDisplayName } from "@/lib/profile/displayName";
@@ -39,7 +39,7 @@ export async function resolveInvite(token: string): Promise<ResolvedInvite> {
     .select(
       "revoked_at, styling_requests!inner(id, title, occasion, event_at, notes, status, owner:profiles(display_name))",
     )
-    .eq("token_hash", hashInviteToken(token))
+    .eq("token_hash", hashSecretToken(token))
     .maybeSingle<InviteRow>();
 
   // A failed lookup must not be reported to the guest as an invalid link.

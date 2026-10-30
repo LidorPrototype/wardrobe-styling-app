@@ -4,12 +4,12 @@ const TOKEN_BYTES = 32;
 // base64url of 32 bytes, no padding.
 const TOKEN_PATTERN = /^[A-Za-z0-9_-]{43}$/;
 
-export function generateInviteToken(): string {
+export function generateSecretToken(): string {
   return randomBytes(TOKEN_BYTES).toString("base64url");
 }
 
 // A fast hash is enough here: the token is random, not a guessable password.
-export function hashInviteToken(token: string): string {
+export function hashSecretToken(token: string): string {
   return createHash("sha256").update(token).digest("hex");
 }
 
