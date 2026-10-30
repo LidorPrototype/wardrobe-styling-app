@@ -16,9 +16,11 @@ export type ClothingCardItem = {
 export async function ClothingCard({
   item,
   locale,
+  eager = false,
 }: {
   item: ClothingCardItem;
   locale: string;
+  eager?: boolean;
 }) {
   const t = await getTranslations("wardrobe");
   const tCategory = await getTranslations("enums.category");
@@ -34,6 +36,7 @@ export async function ClothingCard({
               alt={item.name}
               fill
               unoptimized
+              loading={eager ? "eager" : "lazy"}
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
               className="object-cover"
             />

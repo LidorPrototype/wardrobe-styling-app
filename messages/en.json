@@ -119,6 +119,44 @@
       "notFound": "Request not found."
     }
   },
+  "invites": {
+    "title": "Invite link",
+    "noneHint": "Create a private link and send it to the people you want styling help from. They don't need an account.",
+    "activeHint": "An invite link is active. Anyone with the link can open this request.",
+    "finishedHint": "Invite links don't work while this request is finished. Reopen it to invite people again.",
+    "create": "Create invite link",
+    "regenerate": "Create a new link",
+    "revoke": "Turn off link",
+    "copy": "Copy",
+    "copied": "Copied",
+    "linkLabel": "Invite link",
+    "shownOnce": "Copy this link now. For security it can't be shown again — if you lose it, create a new one.",
+    "confirmReplace": "Create a new link? The current link will stop working.",
+    "confirmRevoke": "Turn off the invite link? Anyone who has it will no longer be able to open this request.",
+    "errors": {
+      "createFailed": "Could not create the link. Please try again.",
+      "revokeFailed": "Could not turn off the link. Please try again.",
+      "requestFinished": "This request is finished. Reopen it to create an invite link.",
+      "copyFailed": "Couldn't copy automatically. The link is selected — copy it with Ctrl+C (or ⌘C).",
+      "nameInvalid": "Use up to 40 characters, and not an email address.",
+      "nameSaveFailed": "Could not save the name. Please try again."
+    },
+    "ownerName": "Shown to guests as",
+    "ownerNamePlaceholder": "e.g. Lidor",
+    "ownerNameHint": "Guests see this name so they know whose wardrobe they're styling. Your email is never shown.",
+    "ownerNameSaved": "Saved"
+  },
+  "guest": {
+    "invitedTo": "You've been invited to help with",
+    "joinSoon": "Joining with a nickname is coming soon.",
+    "closedBody": "This styling request is closed, so it isn't accepting new people.",
+    "invalidTitle": "This invite link isn't valid",
+    "invalidBody": "It may have been turned off or replaced. Ask the person who invited you for a new link.",
+    "errorTitle": "Something went wrong",
+    "errorBody": "We couldn't load this invite. Please try again in a moment.",
+    "retry": "Try again",
+    "invitedBy": "{name} invited you to help with"
+  },
   "enums": {
     "category": {
       "top": "Top",

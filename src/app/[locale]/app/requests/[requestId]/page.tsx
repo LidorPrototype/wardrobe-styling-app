@@ -8,6 +8,8 @@ import { signImageUrls } from "@/lib/wardrobe/images";
 import { EVENT_TIME_ZONE, toFormattableDate } from "@/lib/requests/eventDate";
 import { RequestActions } from "@/components/requests/RequestActions";
 import { RequestStatusBadge } from "@/components/requests/RequestStatusBadge";
+import { InvitePanel } from "@/components/requests/InvitePanel";
+import { guestSafeDisplayName } from "@/lib/profile/displayName";
 import { BackArrow } from "@/components/layout/BackArrow";
 
 export default async function RequestDetailPage({
@@ -41,6 +43,21 @@ export default async function RequestDetailPage({
     .eq("wardrobe_id", request.wardrobe_id)
     .eq("is_archived", false)
     .order("created_at", { ascending: false });
+
+  const { data: activeInvite, error: inviteError } = await supabase
+    .from("invite_tokens")
+    .select("id")
+    .eq("request_id", request.id)
+    .is("revoked_at", null)
+    .maybeSingle();
+  if (inviteError) throw new Error(`invite lookup failed: ${inviteError.message}`);
+
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("display_name")
+    .eq("id", user.id)
+    .single();
+  if (profileError) throw new Error(`profile lookup failed: ${profileError.message}`);
 
   const wardrobeItems = items ?? [];
   const urlMap = await signImageUrls(wardrobeItems.map((i) => i.image_path));
@@ -110,6 +127,14 @@ export default async function RequestDetailPage({
         status={request.status}
       />
 
+      <InvitePanel
+        locale={locale}
+        requestId={request.id}
+        hasActiveLink={Boolean(activeInvite)}
+        finished={finished}
+        displayName={guestSafeDisplayName(profile.display_name)}
+      />
+
       <section className="flex flex-col gap-3 border-t border-zinc-200 pt-6 dark:border-zinc-800">
         <div>
           <h2 className="font-medium text-zinc-950 dark:text-zinc-50">
@@ -124,7 +149,7 @@ export default async function RequestDetailPage({
           </p>
         ) : (
           <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">
-            {wardrobeItems.map((item) => {
+            {wardrobeItems.map((item, index) => {
               const url = item.image_path
                 ? (urlMap.get(item.image_path) ?? null)
                 : null;
@@ -137,6 +162,7 @@ export default async function RequestDetailPage({
                         alt={item.name}
                         fill
                         unoptimized
+                        loading={index < 6 ? "eager" : "lazy"}
                         sizes="(max-width: 640px) 33vw, (max-width: 1024px) 25vw, 16vw"
                         className="object-cover"
                       />
