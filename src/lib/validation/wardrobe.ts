@@ -46,7 +46,6 @@ export const ClothingItemSchema = z
     tags: z.array(z.string().trim().min(1).max(40)).max(30).default([]),
   })
   .superRefine((val, ctx) => {
-    // Subcategory must belong to the chosen category.
     if (val.subcategory && !isValidSubcategoryFor(val.category, val.subcategory)) {
       ctx.addIssue({
         code: "custom",
@@ -71,7 +70,6 @@ export function validateImage(file: File | null, { required }: { required: boole
   return null;
 }
 
-/** Parses the repeated `tags` form fields, de-duplicated case-insensitively. */
 export function parseTags(raw: FormDataEntryValue[]): string[] {
   const seen = new Set<string>();
   const out: string[] = [];

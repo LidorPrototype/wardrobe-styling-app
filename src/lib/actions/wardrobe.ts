@@ -13,7 +13,7 @@ import {
 
 const BUCKET = "wardrobe-items";
 
-/** Field values echoed back so a failed submit does not wipe the form. */
+// React resets the form after an action; echoing values keeps a failed submit's input.
 function echo(formData: FormData): Record<string, string | string[]> {
   return {
     name: String(formData.get("name") ?? ""),
@@ -67,7 +67,7 @@ export async function createClothingItem(
     return { fieldErrors: fieldErrorsFrom(parsed.error), values };
   }
 
-  // The item's own wardrobe — MVP has exactly one per owner.
+  // MVP: one wardrobe per owner.
   const { data: wardrobe } = await supabase
     .from("wardrobes")
     .select("id")
@@ -95,7 +95,7 @@ export async function createClothingItem(
       brand: parsed.data.brand ?? null,
       size: parsed.data.size ?? null,
       notes: parsed.data.notes ?? null,
-      image_path: "", // set immediately below, once the id is known
+      image_path: "",
     })
     .select("id")
     .single();
@@ -229,8 +229,7 @@ export async function deleteClothingItem(locale: string, itemId: string) {
     .eq("id", itemId)
     .maybeSingle();
 
-  // Remove the image first — an orphaned object is worse than an orphaned row,
-  // since the row is what the UI lists.
+  // Image first: an orphaned file is invisible, an orphaned row is not.
   if (item?.image_path) {
     await supabase.storage.from(BUCKET).remove([item.image_path]);
   }
@@ -240,7 +239,6 @@ export async function deleteClothingItem(locale: string, itemId: string) {
   revalidatePath(`/${locale}/app/wardrobe`);
 }
 
-/** Tags are stored raw; replacing means delete-then-insert the whole set. */
 async function saveTags(
   itemId: string,
   tags: string[],

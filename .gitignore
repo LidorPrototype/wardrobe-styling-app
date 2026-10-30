@@ -43,14 +43,13 @@ yarn-error.log*
 .idea/
 .vscode/
 
-# Claude Code — personal machine settings (launch.json is shared)
+# Claude Code personal settings
 .claude/settings.local.json
 
-# local test assets — not app source
+# local test photos
 /photos/
 
-# scratch file regenerated per milestone from supabase/migrations/*.sql;
-# not itself a source file — see supabase/migrations/ for the real history
+# generated from supabase/migrations/ for the dashboard SQL editor
 supabase/PASTE_INTO_SQL_EDITOR.sql
 
 # vercel

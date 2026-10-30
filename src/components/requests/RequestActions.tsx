@@ -22,7 +22,6 @@ export function RequestActions({
 
   return (
     <div className="flex flex-wrap items-center gap-3 text-sm">
-      {/* A finished request is read-only, so editing it is not offered. */}
       {!finished && (
         <Link
           href={`/app/requests/${requestId}/edit`}

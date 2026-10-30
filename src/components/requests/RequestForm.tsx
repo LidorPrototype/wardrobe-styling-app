@@ -46,7 +46,7 @@ export function RequestForm({
     undefined,
   );
 
-  // Values echoed back by a failed submit win over the initial row values.
+  // A failed submit's echoed values win over the saved row.
   const v = { ...initial, ...(state?.values ?? {}) };
 
   const err = (field: string) =>

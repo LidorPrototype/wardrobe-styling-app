@@ -102,7 +102,6 @@ export async function logout(locale: string) {
   redirect({ href: "/login", locale });
 }
 
-// Zod v4 error → { field: messages[] }
 function z_flatten(error: {
   issues: { path: PropertyKey[]; message: string }[];
 }) {

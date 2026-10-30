@@ -1,10 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
-/**
- * OAuth callback: exchanges the `code` from the provider (Google) for a
- * Supabase session, then redirects into the localized app.
- */
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ locale: string }> },

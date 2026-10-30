@@ -25,7 +25,6 @@ export default async function WardrobePage({
   const t = await getTranslations("wardrobe");
   const supabase = await createClient();
 
-  // Tag vocabulary for the filter dropdown — the owner's own tags only.
   const { data: ownedTags } = await supabase
     .from("clothing_item_tags")
     .select("tag, clothing_items!inner(owner_id)")
@@ -46,8 +45,7 @@ export default async function WardrobePage({
   if (filters.color) query = query.eq("color", filters.color);
 
   if (filters.tag) {
-    // Resolve the tag to item ids first — clearer than filtering an embedded
-    // resource, and keeps each item's full tag list intact below.
+    // Filtering the embedded tags instead would truncate each item's tag list.
     const { data: tagged } = await supabase
       .from("clothing_item_tags")
       .select("clothing_item_id, clothing_items!inner(owner_id)")

@@ -8,8 +8,6 @@ export default async function DashboardPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  // Gate + bootstrap must complete before querying owner data. Cached, so this
-  // does not duplicate the work already done by the app layout.
   const user = await requireUser(locale);
 
   const t = await getTranslations("app");

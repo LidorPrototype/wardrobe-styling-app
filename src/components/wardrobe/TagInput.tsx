@@ -3,11 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 
-/**
- * Free-text tags in the owner's own vocabulary — stored raw, never translated.
- * Submits one hidden `tags` field per tag so the server action can read them
- * with formData.getAll("tags").
- */
+// One hidden `tags` input per tag; the action reads formData.getAll("tags").
 export function TagInput({ defaultTags = [] }: { defaultTags?: string[] }) {
   const t = useTranslations("wardrobe");
   const tCommon = useTranslations("common");

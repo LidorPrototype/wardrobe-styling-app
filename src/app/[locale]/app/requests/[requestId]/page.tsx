@@ -24,7 +24,7 @@ export default async function RequestDetailPage({
   const format = await getFormatter();
   const supabase = await createClient();
 
-  // RLS scopes this to the owner, so another owner's id simply yields nothing.
+  // RLS: another owner's id yields nothing.
   const { data: request } = await supabase
     .from("styling_requests")
     .select("id, title, occasion, event_at, notes, status, wardrobe_id")
@@ -33,8 +33,7 @@ export default async function RequestDetailPage({
 
   if (!request) notFound();
 
-  // MVP rule: a request exposes the owner's whole active wardrobe. Narrowing it
-  // to a per-request subset is a later concern.
+  // MVP: a request exposes the owner's whole active wardrobe.
   const { data: items } = await supabase
     .from("clothing_items")
     .select("id, name, category, image_path")

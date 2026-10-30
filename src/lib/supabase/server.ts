@@ -1,11 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
-/**
- * Supabase client for Server Components, Server Actions, and Route Handlers.
- * Uses the publishable key + the request's auth cookies, so all access is
- * enforced by Row Level Security as the logged-in user.
- */
 export async function createClient() {
   const cookieStore = await cookies();
 
@@ -23,8 +18,7 @@ export async function createClient() {
               cookieStore.set(name, value, options),
             );
           } catch {
-            // Called from a Server Component — safe to ignore because the
-            // proxy (src/proxy.ts) refreshes the session cookies instead.
+            // Server Components can't set cookies; the proxy refreshes them.
           }
         },
       },

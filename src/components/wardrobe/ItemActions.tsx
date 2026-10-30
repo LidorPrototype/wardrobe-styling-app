@@ -44,7 +44,6 @@ export function ItemActions({
         type="button"
         disabled={pending}
         onClick={() => {
-          // Deletion also removes the stored image and cannot be undone.
           if (!window.confirm(t("confirmDelete"))) return;
           startTransition(() => {
             void deleteClothingItem(locale, itemId);

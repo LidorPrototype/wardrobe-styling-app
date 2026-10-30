@@ -1,13 +1,6 @@
 /**
- * Canonical clothing code lists.
- *
- * These are language-neutral codes — they are what gets stored in the database
- * and used for filtering. Human-readable labels live in the `enums` namespace of
- * messages/{locale}.json, keyed by the same codes, so the same wardrobe reads
- * correctly in English and Hebrew. Never store a localized label in the DB.
- *
- * Adding a code here means adding the matching translation key in BOTH locale
- * files. Renaming or removing a code is a data migration, not a code change.
+ * Language-neutral codes stored in the database; labels live under `enums` in
+ * messages/{locale}.json. Renaming or removing a code requires a data migration.
  */
 
 export const CATEGORIES = [
@@ -20,7 +13,6 @@ export const CATEGORIES = [
   "other",
 ] as const;
 
-/** Subcategories are scoped to a category so the UI can narrow the options. */
 export const SUBCATEGORIES_BY_CATEGORY = {
   top: ["t_shirt", "shirt", "button_down", "blouse", "sweater", "hoodie", "tank_top"],
   bottom: ["jeans", "trousers", "shorts", "skirt", "leggings"],
@@ -61,7 +53,6 @@ export type Color = (typeof COLORS)[number];
 export type Season = (typeof SEASONS)[number];
 export type Formality = (typeof FORMALITIES)[number];
 
-/** Subcategories valid for a given category, for dependent selects. */
 export function subcategoriesFor(category: string): readonly string[] {
   return (
     SUBCATEGORIES_BY_CATEGORY[category as Category] ?? SUBCATEGORIES_BY_CATEGORY.other
