@@ -1,17 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-/**
- * Owner-scoped storage cleanup.
- *
- * Everything here goes through the Storage API on purpose. Deleting rows from
- * `storage.objects` with SQL removes only the metadata — the underlying file
- * stays in the storage backend, still billed and now unfindable, because the
- * row was the index. So a DB trigger is NOT a valid cleanup path here.
- * See https://supabase.com/docs/guides/storage/management/delete-objects
- *
- * These functions take the Supabase client as an argument (rather than building
- * one) so the same logic runs from a server action and from a CLI script.
- */
+// Must go through the Storage API: deleting `storage.objects` rows with SQL
+// (e.g. from a trigger) removes the index but leaves the file in the backend.
 
 export const WARDROBE_BUCKET = "wardrobe-items";
 
@@ -20,11 +10,6 @@ function isFolder(entry: { id: string | null }) {
   return entry.id === null;
 }
 
-/**
- * Every object path under a prefix, walking nested folders.
- * Covers `{owner}/{wardrobe}/{item}/original.*` and, from Milestone 6,
- * `{owner}/profile/full-body.*` — anything under the owner's folder.
- */
 export async function listObjectsUnder(
   supabase: SupabaseClient,
   prefix: string,
@@ -50,7 +35,6 @@ export async function listObjectsUnder(
   return paths;
 }
 
-/** Top-level folder names in the bucket — one per owner id. */
 export async function listOwnerFolders(
   supabase: SupabaseClient,
 ): Promise<string[]> {
@@ -62,10 +46,6 @@ export async function listOwnerFolders(
   return data.filter(isFolder).map((e) => e.name);
 }
 
-/**
- * Deletes every stored object belonging to one owner. Safe to call for an owner
- * with no objects. Returns the paths that were removed.
- */
 export async function deleteOwnerStorage(
   supabase: SupabaseClient,
   ownerId: string,
@@ -87,12 +67,8 @@ export async function deleteOwnerStorage(
 }
 
 /**
- * Owner folders in the bucket with no matching `profiles` row — i.e. storage
- * left behind by a deleted account. Deleting an auth user cascades the database
- * rows but never touches storage, so these accumulate silently, including when
- * the deletion is done from the Supabase dashboard.
- *
- * Requires a client that can read all profiles (the secret key).
+ * Owner folders with no `profiles` row. Deleting an auth user cascades database
+ * rows but never storage. Needs a client that can read all profiles.
  */
 export async function findOrphanedOwnerIds(
   supabase: SupabaseClient,

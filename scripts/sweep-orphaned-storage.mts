@@ -1,17 +1,6 @@
-/**
- * Removes wardrobe-items storage left behind by deleted owner accounts.
- *
- * Deleting a Supabase auth user cascades the database rows (profiles →
- * wardrobes → clothing_items → clothing_item_tags) but never touches storage,
- * so an owner's images survive their account. This reconciles the bucket
- * against `profiles` and deletes anything with no live owner.
- *
- * Runs through the Storage API — deleting `storage.objects` rows with SQL would
- * leave the real files behind in the storage backend.
- *
- *   pnpm sweep:storage            # dry run, lists what would be deleted
- *   pnpm sweep:storage --apply    # actually delete
- */
+// Deletes stored photos whose owner account no longer exists.
+//   pnpm sweep:storage            dry run
+//   pnpm sweep:storage --apply    delete
 import { createClient } from "@supabase/supabase-js";
 import {
   deleteOwnerStorage,
@@ -32,7 +21,7 @@ if (!url || !secret) {
 
 const apply = process.argv.includes("--apply");
 
-// Secret key: bypasses RLS so it can see every owner's objects. Local CLI only.
+// Secret key bypasses RLS to see every owner's objects. Local CLI only.
 const supabase = createClient(url, secret, {
   auth: { autoRefreshToken: false, persistSession: false },
 });

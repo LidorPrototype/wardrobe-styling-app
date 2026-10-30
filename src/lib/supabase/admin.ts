@@ -2,14 +2,8 @@ import "server-only";
 
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 
-/**
- * Admin Supabase client using the SECRET key. Bypasses Row Level Security.
- *
- * SERVER ONLY. Never import this into a Client Component. Use only after
- * manually validating the caller's authorization (e.g. guest server actions
- * in later milestones). Owner-facing reads/writes should use the RLS-enforced
- * server client (./server.ts) instead.
- */
+// Bypasses RLS. Use only after checking the caller's authorization yourself;
+// owner reads/writes belong on the RLS-enforced client in ./server.ts.
 export function createAdminClient() {
   return createSupabaseClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

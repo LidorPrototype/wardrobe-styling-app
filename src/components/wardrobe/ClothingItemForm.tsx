@@ -65,10 +65,9 @@ export function ClothingItemForm({
     FormData
   >(action, undefined);
 
-  // Values echoed back by a failed submit win over the initial row values.
+  // A failed submit's echoed values win over the saved row.
   const v = { ...initial, ...(state?.values ?? {}) } as ClothingItemFormValues;
 
-  // Category drives which subcategories are offered, so it needs local state.
   const [category, setCategory] = useState(v.category);
   const [preview, setPreview] = useState<string | null>(null);
 
@@ -86,7 +85,6 @@ export function ClothingItemForm({
         </p>
       )}
 
-      {/* Photo */}
       <label className="flex flex-col gap-1 text-sm">
         <span className="text-zinc-700 dark:text-zinc-300">
           {t("image")}
@@ -123,7 +121,6 @@ export function ClothingItemForm({
         )}
       </label>
 
-      {/* Name */}
       <label className="flex flex-col gap-1 text-sm">
         <span className="text-zinc-700 dark:text-zinc-300">{t("name")}</span>
         <input

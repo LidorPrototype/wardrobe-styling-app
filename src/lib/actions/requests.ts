@@ -10,7 +10,7 @@ import {
   type RequestFormState,
 } from "@/lib/validation/request";
 
-/** Field values echoed back so a failed submit does not wipe the form. */
+// React resets the form after an action; echoing values keeps a failed submit's input.
 function echo(formData: FormData): Record<string, string> {
   return {
     title: String(formData.get("title") ?? ""),
@@ -43,7 +43,7 @@ export async function createStylingRequest(
     return { fieldErrors: fieldErrorsFrom(parsed.error), values };
   }
 
-  // The request's own wardrobe — MVP has exactly one per owner.
+  // MVP: one wardrobe per owner.
   const { data: wardrobe } = await supabase
     .from("wardrobes")
     .select("id")
@@ -97,8 +97,7 @@ export async function updateStylingRequest(
   if (!existing) {
     return { error: "notFound", values };
   }
-  // A DB trigger rejects this too — checked here to return a readable message
-  // rather than surfacing a raw Postgres error.
+  // The DB trigger also rejects this; checking here gives a readable message.
   if (existing.status === "finished") {
     return { error: "finishedReadOnly", values };
   }

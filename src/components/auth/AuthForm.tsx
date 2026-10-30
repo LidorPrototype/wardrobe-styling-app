@@ -20,8 +20,7 @@ export function AuthForm({ mode }: { mode: Mode }) {
 
   const googleAction = loginWithGoogle.bind(null, locale);
 
-  // The password field is cleared on a failed submit (never echoed back), so
-  // move focus there to let the user retype straight away.
+  // The password is never echoed back, so focus it for retyping.
   const passwordRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (state?.error || state?.fieldErrors?.password) {
@@ -43,8 +42,7 @@ export function AuthForm({ mode }: { mode: Mode }) {
             type="email"
             autoComplete="email"
             required
-            // React resets the form after an action, restoring inputs to their
-            // defaultValue — so a failed submit keeps the typed email.
+            // React resets the form to defaultValue after an action.
             defaultValue={state?.email ?? ""}
             className="rounded-md border border-zinc-300 bg-white px-3 py-2 text-zinc-950 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
           />

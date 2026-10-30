@@ -18,11 +18,7 @@ export type AuthFormState =
         email?: string[];
         password?: string[];
       };
-      /**
-       * Echoed back so a failed submit can repopulate the email field — React
-       * resets uncontrolled inputs once a form action completes. The password is
-       * deliberately never echoed back.
-       */
+      // Echoed so a failed submit keeps the email. Never echo the password.
       email?: string;
     }
   | undefined;

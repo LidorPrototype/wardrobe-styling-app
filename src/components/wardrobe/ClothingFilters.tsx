@@ -4,10 +4,7 @@ import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/lib/i18n/routing";
 import { CATEGORIES, COLORS } from "@/lib/enums/clothing";
 
-/**
- * Filters are URL state (search params), so the wardrobe page stays a Server
- * Component and filtered views are linkable and back-button friendly.
- */
+// Filters live in the URL so the page stays a Server Component and views are linkable.
 export function ClothingFilters({
   allTags,
   selected,

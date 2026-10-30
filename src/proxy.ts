@@ -5,20 +5,13 @@ import { routing } from "@/lib/i18n/routing";
 
 const handleI18nRouting = createMiddleware(routing);
 
-/**
- * Proxy (Next.js 16's renamed Middleware). Runs on every matched request and:
- *  1. Applies next-intl locale routing (detection, /en /he prefixing, rewrite).
- *  2. Refreshes the Supabase auth session cookies on the resulting response.
- *
- * Route protection is NOT done here (optimistic checks only). Real enforcement
- * lives server-side in requireUser() + RLS.
- */
+// Locale routing + Supabase session refresh only. Access control is enforced
+// by requireUser() and RLS, not here.
 export async function proxy(request: NextRequest) {
-  // 1. next-intl builds the response (redirect / rewrite + NEXT_LOCALE cookie).
   const response = handleI18nRouting(request);
 
-  // 2. Refresh Supabase session, writing any rotated auth cookies onto both the
-  //    incoming request (for downstream) and the outgoing next-intl response.
+  // Rotated auth cookies go on both the request (for downstream rendering) and
+  // the next-intl response.
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,

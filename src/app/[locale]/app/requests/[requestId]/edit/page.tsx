@@ -26,7 +26,6 @@ export default async function EditRequestPage({
 
   if (!request) notFound();
 
-  // A finished request is read-only — don't render a form that cannot save.
   if (request.status === "finished") {
     redirect({ href: `/app/requests/${requestId}`, locale });
   }

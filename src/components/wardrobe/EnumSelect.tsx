@@ -2,11 +2,6 @@
 
 import { useTranslations } from "next-intl";
 
-/**
- * Renders a closed-list field. `options` are language-neutral codes; the labels
- * come from the `enums.<namespace>` translation namespace, so the same stored
- * code reads correctly in every locale.
- */
 export function EnumSelect({
   name,
   namespace,

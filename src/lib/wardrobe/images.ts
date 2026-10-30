@@ -3,12 +3,9 @@ import "server-only";
 import { createClient } from "@/lib/supabase/server";
 
 export const WARDROBE_BUCKET = "wardrobe-items";
-const SIGNED_URL_TTL_SECONDS = 60 * 60; // 1 hour
+const SIGNED_URL_TTL_SECONDS = 60 * 60;
 
-/**
- * The wardrobe bucket is private, so images need short-lived signed URLs.
- * Signed in one batch to avoid a request per card.
- */
+/** Signs all paths in one request rather than one per card. */
 export async function signImageUrls(
   paths: (string | null | undefined)[],
 ): Promise<Map<string, string>> {

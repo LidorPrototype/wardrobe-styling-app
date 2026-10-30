@@ -1,11 +1,4 @@
-/**
- * Canonical styling-request code lists.
- *
- * Same contract as src/lib/enums/clothing.ts: these language-neutral codes are
- * what the database stores, and the human-readable labels live in the
- * `enums.occasion` / `enums.requestStatus` namespaces of messages/{locale}.json.
- * Adding a code here means adding the matching key in BOTH locale files.
- */
+// Same contract as enums/clothing.ts.
 
 export const OCCASIONS = [
   "work",

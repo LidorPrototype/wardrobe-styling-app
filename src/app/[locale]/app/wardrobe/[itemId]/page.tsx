@@ -18,7 +18,7 @@ export default async function EditClothingItemPage({
   const t = await getTranslations("wardrobe");
   const supabase = await createClient();
 
-  // RLS scopes this to the owner, so another owner's id simply yields nothing.
+  // RLS: another owner's id yields nothing.
   const { data: item } = await supabase
     .from("clothing_items")
     .select(
