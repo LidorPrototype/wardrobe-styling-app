@@ -20,6 +20,8 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: react-dom
         update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/node" # tracks the Node runtime (22), not the latest Node
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions
     directory: /
