@@ -76,6 +76,10 @@ with `supabase db push` or the Supabase dashboard's SQL editor.
 | `pnpm build` | Production build |
 | `pnpm sweep:storage` | List photos left behind by deleted accounts (`--apply` deletes them) |
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the PR, commit and release conventions.
+
 ## Milestones
 
 - [x] **0** — Project setup, English/Hebrew routing

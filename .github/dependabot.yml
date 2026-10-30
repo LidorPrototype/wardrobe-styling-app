@@ -5,8 +5,9 @@ updates:
     schedule:
       interval: weekly
     commit-message:
-      prefix: chore
-      include: scope
+      # deps: (production) and chore: (dev tooling) both release a patch; see CONTRIBUTING.md.
+      prefix: deps
+      prefix-development: chore
     open-pull-requests-limit: 5
     groups:
       minor-and-patch:
@@ -28,5 +29,4 @@ updates:
     schedule:
       interval: weekly
     commit-message:
-      prefix: chore
-      include: scope
+      prefix: ci
