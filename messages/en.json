@@ -144,18 +144,47 @@
     "ownerName": "Shown to guests as",
     "ownerNamePlaceholder": "e.g. Lidor",
     "ownerNameHint": "Guests see this name so they know whose wardrobe they're styling. Your email is never shown.",
-    "ownerNameSaved": "Saved"
+    "ownerNameSaved": "Saved",
+    "joinedTitle": "{count, plural, =0 {No one has joined yet} one {# person has joined} other {# people have joined}}",
+    "joinedEmpty": "Guests appear here once they join with a nickname.",
+    "joinedWhen": "joined {when}"
   },
   "guest": {
     "invitedTo": "You've been invited to help with",
-    "joinSoon": "Joining with a nickname is coming soon.",
     "closedBody": "This styling request is closed, so it isn't accepting new people.",
     "invalidTitle": "This invite link isn't valid",
     "invalidBody": "It may have been turned off or replaced. Ask the person who invited you for a new link.",
     "errorTitle": "Something went wrong",
-    "errorBody": "We couldn't load this invite. Please try again in a moment.",
+    "errorBody": "We couldn't load this page. Please try again in a moment.",
     "retry": "Try again",
-    "invitedBy": "{name} invited you to help with"
+    "invitedBy": "{name} invited you to help with",
+    "joinTitle": "Join with a nickname",
+    "joinHint": "Pick a nickname and a passphrase. Use the same two to come back later, on any device.",
+    "signBackInTitle": "Sign back in",
+    "closedSignInHint": "This request is closed to new people. If you joined before, sign in to see it.",
+    "nickname": "Nickname",
+    "passphrase": "Passphrase",
+    "passphraseHint": "At least {min} characters. Words, numbers, spaces — anything you'll remember.",
+    "join": "Join",
+    "signIn": "Sign in",
+    "joining": "Joining…",
+    "signedInAs": "You're in as {nickname}",
+    "exit": "Exit",
+    "finishedReadOnly": "This request is finished. You can still look, but nothing can be changed.",
+    "builderSoon": "The wardrobe and outfit builder are coming soon.",
+    "signedOutTitle": "You're not signed in to this request",
+    "signedOutBody": "Open the invite link you were sent and sign in with your nickname and passphrase.",
+    "errors": {
+      "nicknameRequired": "Please enter a nickname.",
+      "nicknameTooLong": "Nicknames can be up to 30 characters.",
+      "passphraseTooShort": "The passphrase must be at least 6 characters.",
+      "passphraseTooLong": "The passphrase can be up to 200 characters.",
+      "invalidLink": "This invite link isn't valid anymore. Ask for a new one.",
+      "closedNoNewJoins": "This request is closed, so it can't take new people. If you joined before, use the nickname you joined with.",
+      "wrongPassphrase": "That nickname is already taken here, and the passphrase doesn't match. If it's you, check the passphrase — otherwise pick a different nickname.",
+      "locked": "Too many wrong tries for this nickname. Try again in 15 minutes.",
+      "joinFailed": "Couldn't join right now. Please try again."
+    }
   },
   "enums": {
     "category": {

@@ -4,11 +4,13 @@ import { getFormatter, getTranslations } from "next-intl/server";
 import { Link } from "@/lib/i18n/routing";
 import { requireUser } from "@/lib/auth/requireUser";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { signImageUrls } from "@/lib/wardrobe/images";
 import { EVENT_TIME_ZONE, toFormattableDate } from "@/lib/requests/eventDate";
 import { RequestActions } from "@/components/requests/RequestActions";
 import { RequestStatusBadge } from "@/components/requests/RequestStatusBadge";
 import { InvitePanel } from "@/components/requests/InvitePanel";
+import { JoinedGuests } from "@/components/requests/JoinedGuests";
 import { guestSafeDisplayName } from "@/lib/profile/displayName";
 import { BackArrow } from "@/components/layout/BackArrow";
 
@@ -58,6 +60,15 @@ export default async function RequestDetailPage({
     .eq("id", user.id)
     .single();
   if (profileError) throw new Error(`profile lookup failed: ${profileError.message}`);
+
+  // Guest rows are deny-all for browser roles. Ownership was proven by the
+  // RLS-scoped request lookup above; only nicknames and dates are read.
+  const { data: guests, error: guestsError } = await createAdminClient()
+    .from("guest_identities")
+    .select("id, nickname, created_at")
+    .eq("request_id", request.id)
+    .order("created_at", { ascending: true });
+  if (guestsError) throw new Error(`guest lookup failed: ${guestsError.message}`);
 
   const wardrobeItems = items ?? [];
   const urlMap = await signImageUrls(wardrobeItems.map((i) => i.image_path));
@@ -131,6 +142,7 @@ export default async function RequestDetailPage({
         locale={locale}
         requestId={request.id}
         hasActiveLink={Boolean(activeInvite)}
+        joinedGuests={<JoinedGuests guests={guests} />}
         finished={finished}
         displayName={guestSafeDisplayName(profile.display_name)}
       />

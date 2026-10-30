@@ -12,12 +12,14 @@ export function InvitePanel({
   hasActiveLink,
   finished,
   displayName,
+  joinedGuests,
 }: {
   locale: string;
   requestId: string;
   hasActiveLink: boolean;
   finished: boolean;
   displayName: string | null;
+  joinedGuests: React.ReactNode;
 }) {
   const t = useTranslations("invites");
   const [pending, startTransition] = useTransition();
@@ -123,6 +125,8 @@ export function InvitePanel({
           )}
         </div>
       )}
+
+      <div className="border-t border-zinc-200 pt-3 dark:border-zinc-800">{joinedGuests}</div>
     </section>
   );
 }

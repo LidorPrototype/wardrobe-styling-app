@@ -10,7 +10,8 @@ creating an account.
 Bilingual from day one: English (LTR) and Hebrew (RTL).
 
 > **Status:** in active development. The owner side (auth, wardrobe,
-> styling requests, invite links) works; guest sign-in is next. See [Milestones](#milestones).
+> styling requests, invite links) and guest sign-in work; the outfit builder
+> is next. See [Milestones](#milestones).
 
 ## Features so far
 
@@ -23,6 +24,9 @@ Bilingual from day one: English (LTR) and Hebrew (RTL).
 - **Invite links** — share a private link to a request; turn it off or
   replace it at any time. Guests open it without an account and see whose
   request it is, never the owner's email.
+- **Guests** — join with a nickname and passphrase, no account needed; come
+  back later on any device as the same person. Repeated wrong passphrases
+  lock the nickname for 15 minutes.
 - **Two languages** — every screen in English and Hebrew, with correct
   right-to-left layout.
 
@@ -79,7 +83,7 @@ with `supabase db push` or the Supabase dashboard's SQL editor.
 - [x] **2** — Wardrobe items with photos
 - [x] **3** — Styling requests
 - [x] **4** — Invite links
-- [ ] **5** — Guest identity and session
+- [x] **5** — Guest identity and session
 - [ ] **6** — Outfit builder workspace
 - [ ] **7** — Voting and comments
 - [ ] **8** — Outfit status and library

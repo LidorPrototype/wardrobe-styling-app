@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/auth/requireUser";
 import { createClient } from "@/lib/supabase/server";
-import { generateInviteToken, hashInviteToken } from "@/lib/invites/token";
+import { generateSecretToken, hashSecretToken } from "@/lib/invites/token";
 
 export type InviteActionResult = { token?: string; error?: string };
 
@@ -15,10 +15,10 @@ export async function createInviteLink(
   await requireUser(locale);
   const supabase = await createClient();
 
-  const token = generateInviteToken();
+  const token = generateSecretToken();
   const { error } = await supabase.rpc("rotate_invite_token", {
     p_request_id: requestId,
-    p_token_hash: hashInviteToken(token),
+    p_token_hash: hashSecretToken(token),
   });
 
   if (error) {
