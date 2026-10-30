@@ -25,8 +25,7 @@ describe("StylingRequestSchema", () => {
   });
 
   it("rejects an event time that is not datetime-local shaped", () => {
-    // Server actions are reachable by direct POST, so the form's input type
-    // is no guarantee of the value's shape.
+    // Server actions accept direct POSTs, so the input type guarantees nothing.
     expect(firstError({ title: "Wedding", eventAt: "next friday" })).toMatchObject({
       path: ["eventAt"],
       message: "eventAtInvalid",

@@ -48,9 +48,6 @@ Bilingual from day one: English (LTR) and Hebrew (RTL).
   editing in the UI, refused by the server action, *and* rejected by a
   database trigger.
 
-The reasoning behind these and other choices is in
-[docs/decisions.md](docs/decisions.md).
-
 ## Running locally
 
 Requires Node 22+, pnpm, and a Supabase project.

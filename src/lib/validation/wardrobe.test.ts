@@ -8,7 +8,6 @@ import {
 
 describe("ClothingItemSchema", () => {
   it("rejects a subcategory that belongs to a different category", () => {
-    // The UI narrows the subcategory list, but a direct POST does not.
     const wrong = ClothingItemSchema.safeParse({
       name: "Blue jeans",
       category: "top",

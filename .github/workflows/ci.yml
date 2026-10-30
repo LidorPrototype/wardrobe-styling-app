@@ -30,9 +30,7 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
-      # The lockfile must not record where packages were downloaded from:
-      # a machine-specific registry (e.g. a private mirror) would otherwise
-      # leak its hostname into a public repo. pnpm-lock is the only lockfile.
+      # Other lockfiles and .npmrc can record the local machine's registry host.
       - name: Dependency sources
         run: |
           status=0
@@ -59,8 +57,6 @@ jobs:
 
       - name: Build
         run: pnpm build
-        env:
-          # Placeholders: the build never contacts Supabase, it only needs
-          # the variables to exist.
+        env: # placeholders: the build reads these but never contacts Supabase
           NEXT_PUBLIC_SUPABASE_URL: https://ci-placeholder.supabase.co
           NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ci-placeholder

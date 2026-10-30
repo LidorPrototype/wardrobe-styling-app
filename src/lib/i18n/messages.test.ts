@@ -21,7 +21,6 @@ function flatKeys(tree: Tree, prefix = ""): string[] {
 
 describe("translations", () => {
   it("English and Hebrew define exactly the same keys", () => {
-    // A key missing from one locale renders as a raw key path in production.
     const enKeys = new Set(flatKeys(en as Tree));
     const heKeys = new Set(flatKeys(he as Tree));
     expect([...enKeys].filter((k) => !heKeys.has(k))).toEqual([]);
