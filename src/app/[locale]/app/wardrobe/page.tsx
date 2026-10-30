@@ -118,10 +118,11 @@ export default async function WardrobePage({
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {rows.map((row) => (
+          {rows.map((row, index) => (
             <ClothingCard
               key={row.id}
               locale={locale}
+              eager={index < 4}
               item={{
                 id: row.id,
                 name: row.name,

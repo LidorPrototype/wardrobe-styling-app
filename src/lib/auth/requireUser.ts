@@ -4,6 +4,7 @@ import { cache } from "react";
 import type { User } from "@supabase/supabase-js";
 import { redirect } from "@/lib/i18n/routing";
 import { createClient } from "@/lib/supabase/server";
+import { DISPLAY_NAME_MAX, guestSafeDisplayName } from "@/lib/profile/displayName";
 
 const ensureOwnerBootstrap = cache(async (user: User) => {
   const supabase = await createClient();
@@ -11,10 +12,12 @@ const ensureOwnerBootstrap = cache(async (user: User) => {
   await supabase.from("profiles").upsert(
     {
       id: user.id,
+      // Guests see this name, so never default it to the email.
       display_name:
-        (user.user_metadata?.full_name as string | undefined) ??
-        user.email ??
-        null,
+        guestSafeDisplayName(user.user_metadata?.full_name as string | undefined)?.slice(
+          0,
+          DISPLAY_NAME_MAX,
+        ) ?? null,
     },
     { onConflict: "id", ignoreDuplicates: true },
   );
