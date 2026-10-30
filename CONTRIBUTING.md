@@ -23,8 +23,8 @@ fix: keep the email when a login fails
 | `feat` | A new user-facing capability | minor (0.**7**.0) |
 | `fix` | A bug fix | patch (0.6.**1**) |
 | `deps` | A production dependency update | patch |
-| `perf` | A performance improvement | patch |
-| `refactor`, `docs`, `test`, `ci`, `chore` | Everything else | none on its own |
+| `perf`, `refactor`, `docs`, `chore` | Other changes worth listing in the changelog | patch |
+| `test`, `ci` | Tests and CI only | none on its own |
 
 A breaking change (`feat!:` or a `BREAKING CHANGE:` footer) bumps the major
 version.
@@ -34,8 +34,8 @@ version.
 [release-please](https://github.com/googleapis/release-please) keeps an open
 **release PR** that collects merged changes, the next version, and the
 `CHANGELOG.md` entry. Merging that PR tags the release and publishes it on
-GitHub. Changes that don't trigger a release on their own are included in
-the next one.
+GitHub. `test` and `ci` changes don't open a release on their own; they ship
+with the next one.
 
 ## Database changes
 

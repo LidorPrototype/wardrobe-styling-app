@@ -5,7 +5,7 @@ updates:
     schedule:
       interval: weekly
     commit-message:
-      # deps: is a release-please releasable type (patch); dev tooling is not shipped.
+      # deps: (production) and chore: (dev tooling) both release a patch; see CONTRIBUTING.md.
       prefix: deps
       prefix-development: chore
     open-pull-requests-limit: 5
