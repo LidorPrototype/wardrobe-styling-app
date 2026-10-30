@@ -1,0 +1,23 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+# The job authenticates with RELEASE_PLEASE_TOKEN, not GITHUB_TOKEN.
+permissions: {}
+
+concurrency:
+  group: release-please
+  cancel-in-progress: false
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: googleapis/release-please-action@v5
+        with:
+          # A personal token: PRs opened with GITHUB_TOKEN don't trigger CI,
+          # and the ruleset requires CI before the release PR can merge.
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
