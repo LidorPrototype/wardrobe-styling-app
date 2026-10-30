@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "sweep:storage": "node --env-file=.env.local scripts/sweep-orphaned-storage.mts"
+    "sweep:storage": "node --env-file=.env.local scripts/sweep-orphaned-storage.mts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.3",
@@ -26,6 +28,8 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.11",
     "tailwindcss": "^4",
-    "typescript": "^5"
-  }
+    "typescript": "^5",
+    "vitest": "^5.0.5"
+  },
+  "packageManager": "pnpm@11.15.1"
 }
