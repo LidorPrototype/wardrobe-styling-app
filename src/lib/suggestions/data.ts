@@ -50,7 +50,7 @@ export type SuggestionView = {
   author:
     | { kind: "guest"; guestIdentityId: string; nickname: string }
     | { kind: "owner"; name: string | null };
-  items: { slot: Slot; itemId: string; name: string; imageUrl: string | null }[];
+  items: { slot: Slot; itemId: string; name: string; category: string; imageUrl: string | null }[];
 };
 
 type SuggestionRow = {
@@ -64,7 +64,7 @@ type SuggestionRow = {
   outfit_suggestion_items: {
     slot: Slot;
     sort_order: number;
-    clothing_items: { id: string; name: string; image_path: string };
+    clothing_items: { id: string; name: string; category: string; image_path: string };
   }[];
 };
 
@@ -73,7 +73,7 @@ export async function listSuggestions(requestId: string): Promise<SuggestionView
   const { data, error } = await admin
     .from("outfit_suggestions")
     .select(
-      "id, title, notes, created_at, guest_identity_id, guest:guest_identities(nickname), owner:profiles(display_name), outfit_suggestion_items(slot, sort_order, clothing_items(id, name, image_path))",
+      "id, title, notes, created_at, guest_identity_id, guest:guest_identities(nickname), owner:profiles(display_name), outfit_suggestion_items(slot, sort_order, clothing_items(id, name, category, image_path))",
     )
     .eq("request_id", requestId)
     .order("created_at", { ascending: false })
@@ -100,7 +100,21 @@ export async function listSuggestions(requestId: string): Promise<SuggestionView
         slot: i.slot,
         itemId: i.clothing_items.id,
         name: i.clothing_items.name,
+        category: i.clothing_items.category,
         imageUrl: urls.get(i.clothing_items.image_path) ?? null,
       })),
   }));
+}
+
+export async function loadHeadPhotoUrl(ownerId: string): Promise<string | null> {
+  const admin = createAdminClient();
+  const { data, error } = await admin
+    .from("profiles")
+    .select("head_photo_path")
+    .eq("id", ownerId)
+    .single();
+  if (error) throw new Error(`profile lookup failed: ${error.message}`);
+  if (!data.head_photo_path) return null;
+  const urls = await signImageUrls([data.head_photo_path], admin);
+  return urls.get(data.head_photo_path) ?? null;
 }

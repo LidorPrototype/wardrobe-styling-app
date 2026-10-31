@@ -36,7 +36,8 @@
     "dashboardTitle": "Dashboard",
     "defaultWardrobe": "Default wardrobe",
     "navWardrobe": "Wardrobe",
-    "navRequests": "Requests"
+    "navRequests": "Requests",
+    "navProfile": "Profile"
   },
   "wardrobe": {
     "title": "Wardrobe",
@@ -223,7 +224,22 @@
       "notSignedIn": "You're not signed in to this request anymore.",
       "requestFinished": "This request is finished, so it can't take new suggestions.",
       "saveFailed": "Couldn't save the suggestion. Please try again."
-    }
+    },
+    "figureLabel": "Outfit preview",
+    "headAlt": "The person being styled"
+  },
+  "profile": {
+    "title": "Profile",
+    "intro": "How you appear to the people you invite.",
+    "headPhoto": "Head photo",
+    "headPhotoHint": "A photo of your face, shown above every outfit so guests see how it looks on you. Only people you invite can see it.",
+    "upload": "Upload photo",
+    "replace": "Replace photo",
+    "uploading": "Uploading…",
+    "remove": "Remove photo",
+    "confirmRemove": "Remove your head photo? Outfits will show a plain head instead.",
+    "saved": "Photo saved.",
+    "name": "Name shown to guests"
   },
   "enums": {
     "category": {

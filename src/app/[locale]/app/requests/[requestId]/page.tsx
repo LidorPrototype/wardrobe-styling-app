@@ -12,7 +12,7 @@ import { RequestStatusBadge } from "@/components/requests/RequestStatusBadge";
 import { InvitePanel } from "@/components/requests/InvitePanel";
 import { JoinedGuests } from "@/components/requests/JoinedGuests";
 import { SuggestionList } from "@/components/suggestions/SuggestionList";
-import { listSuggestions } from "@/lib/suggestions/data";
+import { listSuggestions, loadHeadPhotoUrl } from "@/lib/suggestions/data";
 import { deleteOwnerSuggestion } from "@/lib/actions/suggestions";
 import { guestSafeDisplayName } from "@/lib/profile/displayName";
 import { BackArrow } from "@/components/layout/BackArrow";
@@ -75,7 +75,7 @@ export default async function RequestDetailPage({
   if (guestsError) throw new Error(`guest lookup failed: ${guestsError.message}`);
 
   // Same ownership proof as above.
-  const suggestions = await listSuggestions(request.id);
+  const [suggestions, headUrl] = await Promise.all([listSuggestions(request.id), loadHeadPhotoUrl(user.id)]);
 
   const wardrobeItems = items ?? [];
   const urlMap = await signImageUrls(wardrobeItems.map((i) => i.image_path));
@@ -170,6 +170,7 @@ export default async function RequestDetailPage({
         </div>
         <SuggestionList
           suggestions={suggestions}
+          headUrl={headUrl}
           deleteActionFor={(s) =>
             !finished && s.author.kind === "owner"
               ? deleteOwnerSuggestion.bind(null, locale, request.id, s.id)

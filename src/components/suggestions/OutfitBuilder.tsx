@@ -19,13 +19,17 @@ import {
 } from "@/lib/suggestions/rules";
 import type { SuggestionFormState } from "@/lib/actions/suggestions";
 import type { BuilderItem } from "@/lib/suggestions/data";
+import type { FigureItem } from "@/lib/suggestions/figure";
+import { OutfitFigure } from "@/components/suggestions/OutfitFigure";
 
 export function OutfitBuilder({
   items,
+  headUrl,
   action,
   cancelHref,
 }: {
   items: BuilderItem[];
+  headUrl: string | null;
   action: (state: SuggestionFormState, formData: FormData) => Promise<SuggestionFormState>;
   cancelHref: string;
 }) {
@@ -43,6 +47,12 @@ export function OutfitBuilder({
   const byId = useMemo(() => new Map(items.map((i) => [i.id, i])), [items]);
   const slotOf = (itemId: string) => SLOTS.find((s) => selection[s].includes(itemId));
   const selectedCount = SLOTS.reduce((n, s) => n + selection[s].length, 0);
+  const figureItems: FigureItem[] = SLOTS.flatMap((slot) =>
+    selection[slot].map((id) => {
+      const item = byId.get(id)!;
+      return { itemId: id, name: item.name, imageUrl: item.imageUrl, slot, category: item.category };
+    }),
+  );
 
   const categories = [...new Set(items.map((i) => i.category))];
   const tags = [...new Set(items.flatMap((i) => i.tags))].sort((a, b) => a.localeCompare(b));
@@ -62,6 +72,9 @@ export function OutfitBuilder({
       {/* On phones the wardrobe comes first: picking items is the main task. */}
       <section className="order-2 flex flex-col gap-3 lg:sticky lg:top-4 lg:order-none" aria-label={t("outfit")}>
         <h2 className="font-medium text-zinc-950 dark:text-zinc-50">{t("outfit")}</h2>
+        <div className="rounded-lg bg-zinc-50 p-3 dark:bg-zinc-900">
+          <OutfitFigure headUrl={headUrl} items={figureItems} showEmpty />
+        </div>
         <ul className="flex flex-col gap-2">
           {SLOTS.map((slot) => (
             <li

@@ -3,7 +3,7 @@ import { Link } from "@/lib/i18n/routing";
 import { getGuestSession } from "@/lib/guests/session";
 import { leaveAsGuest } from "@/lib/actions/guests";
 import { deleteGuestSuggestion } from "@/lib/actions/suggestions";
-import { listSuggestions } from "@/lib/suggestions/data";
+import { listSuggestions, loadHeadPhotoUrl } from "@/lib/suggestions/data";
 import { RequestSummary } from "@/components/guest/RequestSummary";
 import { GuestSignedOut } from "@/components/guest/GuestSignedOut";
 import { SuggestionList } from "@/components/suggestions/SuggestionList";
@@ -21,7 +21,10 @@ export default async function GuestRequestPage({
   if (!session) return <GuestSignedOut />;
 
   const finished = session.request.status === "finished";
-  const suggestions = await listSuggestions(requestId);
+  const [suggestions, headUrl] = await Promise.all([
+    listSuggestions(requestId),
+    loadHeadPhotoUrl(session.request.owner_id),
+  ]);
 
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-6">
@@ -60,6 +63,7 @@ export default async function GuestRequestPage({
         </div>
         <SuggestionList
           suggestions={suggestions}
+          headUrl={headUrl}
           deleteActionFor={(s) =>
             !finished && s.author.kind === "guest" && s.author.guestIdentityId === session.identityId
               ? deleteGuestSuggestion.bind(null, locale, requestId, s.id)

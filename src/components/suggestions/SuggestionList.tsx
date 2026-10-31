@@ -1,14 +1,16 @@
-import Image from "next/image";
 import { getFormatter, getTranslations } from "next-intl/server";
 import type { SuggestionView } from "@/lib/suggestions/data";
 import { SLOTS } from "@/lib/suggestions/rules";
 import { DeleteSuggestionButton } from "@/components/suggestions/DeleteSuggestionButton";
+import { OutfitFigure } from "@/components/suggestions/OutfitFigure";
 
 export async function SuggestionList({
   suggestions,
+  headUrl,
   deleteActionFor,
 }: {
   suggestions: SuggestionView[];
+  headUrl: string | null;
   // Returns the bound delete action when the viewer may delete this one.
   deleteActionFor: (s: SuggestionView) => (() => Promise<void>) | null;
 }) {
@@ -48,25 +50,18 @@ export async function SuggestionList({
               {onDelete && <DeleteSuggestionButton action={onDelete} />}
             </div>
 
-            <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
-              {items.map((item) => (
-                <div key={item.itemId} className="flex flex-col gap-1">
-                  <div className="relative aspect-square w-full overflow-hidden rounded-md bg-zinc-100 dark:bg-zinc-800">
-                    {item.imageUrl && (
-                      <Image
-                        src={item.imageUrl}
-                        alt={item.name}
-                        fill
-                        unoptimized
-                        sizes="(max-width: 640px) 33vw, 16vw"
-                        className="object-cover"
-                      />
-                    )}
-                  </div>
-                  <span className="text-[11px] uppercase tracking-wide text-zinc-500">{tSlot(item.slot)}</span>
-                  <span className="-mt-1 line-clamp-1 text-xs text-zinc-700 dark:text-zinc-300">{item.name}</span>
-                </div>
-              ))}
+            <div className="flex flex-wrap items-start gap-4">
+              <div className="rounded-lg bg-zinc-50 p-2 dark:bg-zinc-900">
+                <OutfitFigure headUrl={headUrl} items={items} size="sm" />
+              </div>
+              <ul className="flex min-w-40 flex-1 flex-col gap-1 text-sm">
+                {items.map((item) => (
+                  <li key={item.itemId} className="flex gap-2">
+                    <span className="w-24 shrink-0 text-xs uppercase tracking-wide text-zinc-500">{tSlot(item.slot)}</span>
+                    <span className="text-zinc-800 dark:text-zinc-200">{item.name}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
 
             {s.notes && (
