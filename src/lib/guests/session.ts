@@ -6,6 +6,8 @@ import { generateSecretToken, hashSecretToken } from "@/lib/invites/token";
 import { guestSafeDisplayName } from "@/lib/profile/displayName";
 import { isSessionExpired, SESSION_DAYS } from "@/lib/guests/rules";
 
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 // One cookie per request, so a browser can be a guest on several requests.
 const cookieName = (requestId: string) => `guest_${requestId}`;
 
@@ -20,6 +22,7 @@ export type GuestSession = {
     event_at: string | null;
     notes: string | null;
     status: string;
+    wardrobe_id: string;
     ownerName: string | null;
   };
 };
@@ -55,6 +58,8 @@ export async function startGuestSession(identityId: string, requestId: string) {
 }
 
 export async function getGuestSession(requestId: string): Promise<GuestSession | null> {
+  // A malformed id would make Postgres reject the uuid comparison.
+  if (!UUID.test(requestId)) return null;
   const token = (await cookies()).get(cookieName(requestId))?.value;
   if (!token) return null;
 
@@ -62,7 +67,7 @@ export async function getGuestSession(requestId: string): Promise<GuestSession |
   const { data, error } = await admin
     .from("guest_sessions")
     .select(
-      "id, last_seen_at, guest_identities!inner(id, nickname), styling_requests!inner(id, title, occasion, event_at, notes, status, owner:profiles(display_name))",
+      "id, last_seen_at, guest_identities!inner(id, nickname), styling_requests!inner(id, title, occasion, event_at, notes, status, wardrobe_id, owner:profiles(display_name))",
     )
     .eq("session_token_hash", hashSecretToken(token))
     .eq("request_id", requestId)

@@ -11,6 +11,9 @@ import { RequestActions } from "@/components/requests/RequestActions";
 import { RequestStatusBadge } from "@/components/requests/RequestStatusBadge";
 import { InvitePanel } from "@/components/requests/InvitePanel";
 import { JoinedGuests } from "@/components/requests/JoinedGuests";
+import { SuggestionList } from "@/components/suggestions/SuggestionList";
+import { listSuggestions } from "@/lib/suggestions/data";
+import { deleteOwnerSuggestion } from "@/lib/actions/suggestions";
 import { guestSafeDisplayName } from "@/lib/profile/displayName";
 import { BackArrow } from "@/components/layout/BackArrow";
 
@@ -24,6 +27,7 @@ export default async function RequestDetailPage({
 
   const t = await getTranslations("requests");
   const tCommon = await getTranslations("common");
+  const tSuggestions = await getTranslations("suggestions");
   const tOccasion = await getTranslations("enums.occasion");
   const format = await getFormatter();
   const supabase = await createClient();
@@ -69,6 +73,9 @@ export default async function RequestDetailPage({
     .eq("request_id", request.id)
     .order("created_at", { ascending: true });
   if (guestsError) throw new Error(`guest lookup failed: ${guestsError.message}`);
+
+  // Same ownership proof as above.
+  const suggestions = await listSuggestions(request.id);
 
   const wardrobeItems = items ?? [];
   const urlMap = await signImageUrls(wardrobeItems.map((i) => i.image_path));
@@ -146,6 +153,30 @@ export default async function RequestDetailPage({
         finished={finished}
         displayName={guestSafeDisplayName(profile.display_name)}
       />
+
+      <section className="flex flex-col gap-3 border-t border-zinc-200 pt-6 dark:border-zinc-800">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="font-medium text-zinc-950 dark:text-zinc-50">
+            {tSuggestions("title", { count: suggestions.length })}
+          </h2>
+          {!finished && (
+            <Link
+              href={`/app/requests/${request.id}/suggest`}
+              className="rounded-md bg-zinc-950 px-4 py-2 text-sm font-medium text-white dark:bg-zinc-50 dark:text-zinc-950"
+            >
+              {tSuggestions("suggestAnOutfit")}
+            </Link>
+          )}
+        </div>
+        <SuggestionList
+          suggestions={suggestions}
+          deleteActionFor={(s) =>
+            !finished && s.author.kind === "owner"
+              ? deleteOwnerSuggestion.bind(null, locale, request.id, s.id)
+              : null
+          }
+        />
+      </section>
 
       <section className="flex flex-col gap-3 border-t border-zinc-200 pt-6 dark:border-zinc-800">
         <div>

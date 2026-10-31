@@ -1,9 +1,12 @@
 import { getTranslations } from "next-intl/server";
+import { Link } from "@/lib/i18n/routing";
 import { getGuestSession } from "@/lib/guests/session";
 import { leaveAsGuest } from "@/lib/actions/guests";
+import { deleteGuestSuggestion } from "@/lib/actions/suggestions";
+import { listSuggestions } from "@/lib/suggestions/data";
 import { RequestSummary } from "@/components/guest/RequestSummary";
-
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+import { GuestSignedOut } from "@/components/guest/GuestSignedOut";
+import { SuggestionList } from "@/components/suggestions/SuggestionList";
 
 export default async function GuestRequestPage({
   params,
@@ -12,26 +15,16 @@ export default async function GuestRequestPage({
 }) {
   const { locale, requestId } = await params;
   const t = await getTranslations("guest");
+  const tSuggestions = await getTranslations("suggestions");
 
-  // A malformed id would make Postgres reject the uuid comparison.
-  const session = UUID.test(requestId) ? await getGuestSession(requestId) : null;
-
-  // Same page whether the request exists or not, so ids can't be probed.
-  if (!session) {
-    return (
-      <div className="flex flex-col gap-2 text-center">
-        <h1 className="text-2xl font-semibold text-zinc-950 dark:text-zinc-50">
-          {t("signedOutTitle")}
-        </h1>
-        <p className="text-zinc-600 dark:text-zinc-400">{t("signedOutBody")}</p>
-      </div>
-    );
-  }
+  const session = await getGuestSession(requestId);
+  if (!session) return <GuestSignedOut />;
 
   const finished = session.request.status === "finished";
+  const suggestions = await listSuggestions(requestId);
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="mx-auto flex max-w-3xl flex-col gap-6">
       <div className="flex items-center justify-between gap-3 rounded-md bg-zinc-50 px-4 py-2 text-sm dark:bg-zinc-900">
         <span className="text-zinc-700 dark:text-zinc-300">
           {t("signedInAs", { nickname: session.nickname })}
@@ -51,10 +44,29 @@ export default async function GuestRequestPage({
         </p>
       )}
 
-      {/* The wardrobe and outfit builder arrive in Milestone 6. */}
-      <p className="rounded-md border border-dashed border-zinc-300 px-4 py-3 text-sm text-zinc-600 dark:border-zinc-700 dark:text-zinc-400">
-        {t("builderSoon")}
-      </p>
+      <section className="flex flex-col gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="font-medium text-zinc-950 dark:text-zinc-50">
+            {tSuggestions("title", { count: suggestions.length })}
+          </h2>
+          {!finished && (
+            <Link
+              href={`/guest/request/${requestId}/suggest`}
+              className="rounded-md bg-zinc-950 px-4 py-2 text-sm font-medium text-white dark:bg-zinc-50 dark:text-zinc-950"
+            >
+              {tSuggestions("suggestAnOutfit")}
+            </Link>
+          )}
+        </div>
+        <SuggestionList
+          suggestions={suggestions}
+          deleteActionFor={(s) =>
+            !finished && s.author.kind === "guest" && s.author.guestIdentityId === session.identityId
+              ? deleteGuestSuggestion.bind(null, locale, requestId, s.id)
+              : null
+          }
+        />
+      </section>
     </div>
   );
 }

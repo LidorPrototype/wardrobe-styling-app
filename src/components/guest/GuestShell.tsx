@@ -9,7 +9,13 @@ export const guestMetadata: Metadata = {
   referrer: "no-referrer",
 };
 
-export async function GuestShell({ children }: { children: React.ReactNode }) {
+export async function GuestShell({
+  children,
+  wide = false,
+}: {
+  children: React.ReactNode;
+  wide?: boolean;
+}) {
   const t = await getTranslations("common");
 
   return (
@@ -19,7 +25,7 @@ export async function GuestShell({ children }: { children: React.ReactNode }) {
         <LanguageSwitcher />
       </header>
       <main className="flex flex-1 flex-col items-center px-6 py-12">
-        <div className="w-full max-w-lg">{children}</div>
+        <div className={`w-full ${wide ? "max-w-5xl" : "max-w-lg"}`}>{children}</div>
       </main>
     </div>
   );

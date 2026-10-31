@@ -9,6 +9,7 @@ import {
   SUBCATEGORIES,
 } from "@/lib/enums/clothing";
 import { OCCASIONS, REQUEST_STATUSES } from "@/lib/enums/requests";
+import { SLOTS } from "@/lib/suggestions/rules";
 
 type Tree = { [key: string]: string | Tree };
 
@@ -37,6 +38,7 @@ describe("translations", () => {
       formality: FORMALITIES,
       occasion: OCCASIONS,
       requestStatus: REQUEST_STATUSES,
+      slot: SLOTS,
     };
     const labels = (en as unknown as { enums: Record<string, Record<string, string>> }).enums;
 

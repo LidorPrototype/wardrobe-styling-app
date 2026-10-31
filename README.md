@@ -10,8 +10,8 @@ creating an account.
 Bilingual from day one: English (LTR) and Hebrew (RTL).
 
 > **Status:** in active development. The owner side (auth, wardrobe,
-> styling requests, invite links) and guest sign-in work; the outfit builder
-> is next. See [Milestones](#milestones).
+> styling requests, invite links), guest sign-in and outfit suggestions work;
+> the full-body backdrop is next. See [Milestones](#milestones).
 
 ## Features so far
 
@@ -27,6 +27,9 @@ Bilingual from day one: English (LTR) and Hebrew (RTL).
 - **Guests** — join with a nickname and passphrase, no account needed; come
   back later on any device as the same person. Repeated wrong passphrases
   lock the nickname for 15 minutes.
+- **Outfit suggestions** — guests and the owner build outfits from the
+  wardrobe in slots (top, bottom, shoes, outerwear, accessories, other) by
+  tapping or dragging, then everyone sees them on the request.
 - **Two languages** — every screen in English and Hebrew, with correct
   right-to-left layout.
 
