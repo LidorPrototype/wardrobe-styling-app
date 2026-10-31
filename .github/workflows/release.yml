@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
 
-# The job authenticates with RELEASE_PLEASE_TOKEN, not GITHUB_TOKEN.
+# The job authenticates as the release GitHub App, not with GITHUB_TOKEN.
 permissions: {}
 
 concurrency:
@@ -16,8 +16,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      # A one-hour GitHub App token: unlike GITHUB_TOKEN, PRs it opens trigger
+      # CI, which the ruleset requires before the release PR can merge.
+      - uses: actions/create-github-app-token@v3
+        id: app-token
+        with:
+          client-id: ${{ secrets.RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+          permission-issues: write
+
       - uses: googleapis/release-please-action@v5
         with:
-          # A personal token: PRs opened with GITHUB_TOKEN don't trigger CI,
-          # and the ruleset requires CI before the release PR can merge.
-          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
