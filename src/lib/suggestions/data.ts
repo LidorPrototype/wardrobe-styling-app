@@ -47,6 +47,7 @@ export type SuggestionView = {
   id: string;
   title: string | null;
   notes: string | null;
+  status: string;
   createdAt: string;
   author: Author;
   items: { slot: Slot; itemId: string; name: string; category: string; imageUrl: string | null }[];
@@ -73,6 +74,7 @@ type SuggestionRow = AuthorColumns & {
   id: string;
   title: string | null;
   notes: string | null;
+  status: string;
   created_at: string;
   votes: (AuthorColumns & { created_at: string })[];
   outfit_suggestion_items: {
@@ -87,7 +89,7 @@ export async function listSuggestions(requestId: string): Promise<SuggestionView
   const { data, error } = await admin
     .from("outfit_suggestions")
     .select(
-      `id, title, notes, created_at, ${AUTHOR_SELECT}, votes(created_at, ${AUTHOR_SELECT}), outfit_suggestion_items(slot, sort_order, clothing_items(id, name, category, image_path))`,
+      `id, title, notes, status, created_at, ${AUTHOR_SELECT}, votes(created_at, ${AUTHOR_SELECT}), outfit_suggestion_items(slot, sort_order, clothing_items(id, name, category, image_path))`,
     )
     .eq("request_id", requestId)
     .order("created_at", { ascending: false })
@@ -103,6 +105,7 @@ export async function listSuggestions(requestId: string): Promise<SuggestionView
     id: s.id,
     title: s.title,
     notes: s.notes,
+    status: s.status,
     createdAt: s.created_at,
     author: toAuthor(s),
     items: [...s.outfit_suggestion_items]

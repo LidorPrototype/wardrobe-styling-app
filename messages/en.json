@@ -37,6 +37,7 @@
     "defaultWardrobe": "Default wardrobe",
     "navWardrobe": "Wardrobe",
     "navRequests": "Requests",
+    "navLibrary": "Library",
     "navProfile": "Profile"
   },
   "wardrobe": {
@@ -261,6 +262,43 @@
       "saveFailed": "Couldn't save the comment. Please try again."
     }
   },
+  "library": {
+    "title": "Outfit library",
+    "subtitle": "Every outfit you chose, wore or loved — one entry each time.",
+    "filterLabel": "Filter by status",
+    "all": "All",
+    "empty": "Your library is empty.",
+    "emptyFiltered": "Nothing here with this status yet.",
+    "emptyHint": "On a request, mark an outfit as chosen, worn or favorite to save it here.",
+    "wornOn": "Worn {date}",
+    "savedOn": "Saved {date}",
+    "fromRequest": "From “{title}”",
+    "backToLibrary": "Back to library",
+    "itemDeleted": "(deleted from wardrobe)",
+    "detailsTitle": "Date and notes",
+    "wornOnField": "Date worn",
+    "notesField": "Notes",
+    "notesPlaceholder": "Where you wore it, how it went…",
+    "save": "Save",
+    "saving": "Saving…",
+    "saved": "Saved.",
+    "delete": "Remove from library",
+    "confirmDelete": "Remove this entry from your library? The suggestion itself stays.",
+    "decide": "Your call:",
+    "actions": {
+      "chosen": "Choose",
+      "worn": "Mark worn",
+      "favorite": "Favorite",
+      "rejected": "Reject"
+    },
+    "clear": "Clear",
+    "savedCount": "{count, plural, one {Saved to library once} other {Saved to library # times}}",
+    "errors": {
+      "invalidDate": "Enter a valid date.",
+      "tooLong": "Notes can be up to 1000 characters.",
+      "saveFailed": "Couldn't save. Please try again."
+    }
+  },
   "profile": {
     "title": "Profile",
     "intro": "How you appear to the people you invite.",
@@ -374,6 +412,13 @@
       "outerwear": "Outerwear",
       "accessory": "Accessories",
       "other": "Other"
+    },
+    "outfitStatus": {
+      "suggested": "Suggested",
+      "chosen": "Chosen",
+      "worn": "Worn",
+      "favorite": "Favorite",
+      "rejected": "Rejected"
     }
   }
 }

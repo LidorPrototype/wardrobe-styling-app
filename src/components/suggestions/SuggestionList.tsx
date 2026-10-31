@@ -9,6 +9,10 @@ import { DeleteSuggestionButton } from "@/components/suggestions/DeleteSuggestio
 import { OutfitFigure } from "@/components/suggestions/OutfitFigure";
 import { LikeButton } from "@/components/activity/LikeButton";
 import { CommentThread, authorLabel } from "@/components/activity/CommentThread";
+import { statusShownTo } from "@/lib/library/rules";
+import { recordOutfitDecision } from "@/lib/actions/library";
+import { OutfitStatusBadge } from "@/components/library/OutfitStatusBadge";
+import { DecisionButtons } from "@/components/library/DecisionButtons";
 
 const LIKERS_SHOWN = 3;
 
@@ -22,6 +26,7 @@ export async function SuggestionList({
   finished,
   sort,
   basePath,
+  libraryCounts,
 }: {
   suggestions: SuggestionView[];
   comments: CommentView[];
@@ -33,9 +38,12 @@ export async function SuggestionList({
   sort: SortOrder;
   // The page this list is on, for the sort links.
   basePath: string;
+  // Owner only: how many library entries each suggestion has.
+  libraryCounts?: Map<string, number>;
 }) {
   const t = await getTranslations("suggestions");
   const tActivity = await getTranslations("activity");
+  const tLibrary = await getTranslations("library");
   const tSlot = await getTranslations("enums.slot");
   const format = await getFormatter();
   const now = new Date();
@@ -77,6 +85,8 @@ export async function SuggestionList({
         {await Promise.all(
           sorted.map(async (s) => {
             const mine = isMine(viewer, s.author);
+            const status = statusShownTo(viewer.kind, s.status);
+            const saved = libraryCounts?.get(s.id) ?? 0;
             const items = SLOTS.flatMap((slot) => s.items.filter((i) => i.slot === slot));
             const thread = comments.filter((c) => c.suggestionId === s.id);
             const names = await Promise.all(s.likes.slice(0, LIKERS_SHOWN).map(authorLabel));
@@ -92,7 +102,10 @@ export async function SuggestionList({
               <li key={s.id} className="flex flex-col gap-3 rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
                   <div>
-                    <h3 className="font-medium text-zinc-950 dark:text-zinc-50">{s.title ?? t("untitled")}</h3>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h3 className="font-medium text-zinc-950 dark:text-zinc-50">{s.title ?? t("untitled")}</h3>
+                      {status && <OutfitStatusBadge status={status} />}
+                    </div>
                     <p className="text-xs text-zinc-500">
                       {s.author.kind === "guest"
                         ? t("byGuest", { name: s.author.nickname })
@@ -138,6 +151,20 @@ export async function SuggestionList({
                       : null
                   }
                 />
+
+                {viewer.kind === "owner" && (
+                  <div className="flex flex-col gap-2 border-t border-zinc-100 pt-3 dark:border-zinc-800">
+                    <DecisionButtons
+                      status={s.status}
+                      action={recordOutfitDecision.bind(null, locale, requestId, s.id)}
+                    />
+                    {saved > 0 && (
+                      <Link href="/app/library" className="text-xs text-zinc-600 underline dark:text-zinc-400">
+                        {tLibrary("savedCount", { count: saved })}
+                      </Link>
+                    )}
+                  </div>
+                )}
 
                 <details className="border-t border-zinc-100 pt-3 dark:border-zinc-800">
                   <summary className="cursor-pointer text-sm text-zinc-600 dark:text-zinc-400">

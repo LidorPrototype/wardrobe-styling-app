@@ -18,8 +18,8 @@ export async function AppShell({
 
   return (
     <div className="flex min-h-full flex-1 flex-col">
-      <header className="flex items-center justify-between border-b border-zinc-200 px-6 py-3 dark:border-zinc-800">
-        <div className="flex items-center gap-5">
+      <header className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-b border-zinc-200 px-6 py-3 dark:border-zinc-800">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
           <Link
             href="/app"
             className="font-semibold text-zinc-950 dark:text-zinc-50"
@@ -39,6 +39,12 @@ export async function AppShell({
             {tApp("navRequests")}
           </Link>
           <Link
+            href="/app/library"
+            className="text-sm text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50"
+          >
+            {tApp("navLibrary")}
+          </Link>
+          <Link
             href="/app/profile"
             className="text-sm text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50"
           >
@@ -48,7 +54,8 @@ export async function AppShell({
         <div className="flex items-center gap-4">
           <LanguageSwitcher />
           {userEmail && (
-            <span className="text-sm text-zinc-500">{userEmail}</span>
+            // Too wide for a phone header.
+            <span className="hidden text-sm text-zinc-500 sm:inline">{userEmail}</span>
           )}
           <form action={logoutAction}>
             <button
