@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/LidorPrototype/wardrobe-styling-app/compare/v0.7.0...v0.8.0) (2026-10-31)
+
+
+### Features
+
+* likes and comments on outfit suggestions (Milestone 7) ([#24](https://github.com/LidorPrototype/wardrobe-styling-app/issues/24)) ([d9ce0ec](https://github.com/LidorPrototype/wardrobe-styling-app/commit/d9ce0ec11a71400377e5efee347dca925278807d))
+
 ## [0.7.0](https://github.com/LidorPrototype/wardrobe-styling-app/compare/v0.6.1...v0.7.0) (2026-10-31)
 
 
