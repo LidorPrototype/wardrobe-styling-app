@@ -4,6 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { signImageUrls } from "@/lib/wardrobe/images";
 import { guestSafeDisplayName } from "@/lib/profile/displayName";
 import type { Slot } from "@/lib/suggestions/rules";
+import type { Author } from "@/lib/activity/rules";
 
 // These read with the secret key so guest and owner pages share one shape.
 // Callers must already have checked access to the request (guest session or
@@ -47,20 +48,33 @@ export type SuggestionView = {
   title: string | null;
   notes: string | null;
   createdAt: string;
-  author:
-    | { kind: "guest"; guestIdentityId: string; nickname: string }
-    | { kind: "owner"; name: string | null };
+  author: Author;
   items: { slot: Slot; itemId: string; name: string; category: string; imageUrl: string | null }[];
+  // Oldest like first.
+  likes: Author[];
 };
 
-type SuggestionRow = {
+type AuthorColumns = {
+  guest_identity_id: string | null;
+  guest: { nickname: string } | null;
+  owner: { display_name: string | null } | null;
+};
+
+function toAuthor(row: AuthorColumns): Author {
+  return row.guest_identity_id && row.guest
+    ? { kind: "guest", guestIdentityId: row.guest_identity_id, nickname: row.guest.nickname }
+    : { kind: "owner", name: guestSafeDisplayName(row.owner?.display_name) };
+}
+
+// Both foreign keys are embedded by table name; each table is referenced once.
+const AUTHOR_SELECT = "guest_identity_id, guest:guest_identities(nickname), owner:profiles(display_name)";
+
+type SuggestionRow = AuthorColumns & {
   id: string;
   title: string | null;
   notes: string | null;
   created_at: string;
-  guest_identity_id: string | null;
-  guest: { nickname: string } | null;
-  owner: { display_name: string | null } | null;
+  votes: (AuthorColumns & { created_at: string })[];
   outfit_suggestion_items: {
     slot: Slot;
     sort_order: number;
@@ -73,7 +87,7 @@ export async function listSuggestions(requestId: string): Promise<SuggestionView
   const { data, error } = await admin
     .from("outfit_suggestions")
     .select(
-      "id, title, notes, created_at, guest_identity_id, guest:guest_identities(nickname), owner:profiles(display_name), outfit_suggestion_items(slot, sort_order, clothing_items(id, name, category, image_path))",
+      `id, title, notes, created_at, ${AUTHOR_SELECT}, votes(created_at, ${AUTHOR_SELECT}), outfit_suggestion_items(slot, sort_order, clothing_items(id, name, category, image_path))`,
     )
     .eq("request_id", requestId)
     .order("created_at", { ascending: false })
@@ -90,10 +104,7 @@ export async function listSuggestions(requestId: string): Promise<SuggestionView
     title: s.title,
     notes: s.notes,
     createdAt: s.created_at,
-    author:
-      s.guest_identity_id && s.guest
-        ? { kind: "guest", guestIdentityId: s.guest_identity_id, nickname: s.guest.nickname }
-        : { kind: "owner", name: guestSafeDisplayName(s.owner?.display_name) },
+    author: toAuthor(s),
     items: [...s.outfit_suggestion_items]
       .sort((a, b) => a.sort_order - b.sort_order)
       .map((i) => ({
@@ -103,6 +114,45 @@ export async function listSuggestions(requestId: string): Promise<SuggestionView
         category: i.clothing_items.category,
         imageUrl: urls.get(i.clothing_items.image_path) ?? null,
       })),
+    likes: [...s.votes].sort((a, b) => a.created_at.localeCompare(b.created_at)).map(toAuthor),
+  }));
+}
+
+export type CommentView = {
+  id: string;
+  // null: a comment on the request as a whole.
+  suggestionId: string | null;
+  body: string;
+  createdAt: string;
+  edited: boolean;
+  author: Author;
+};
+
+type CommentRow = AuthorColumns & {
+  id: string;
+  suggestion_id: string | null;
+  body: string;
+  created_at: string;
+  updated_at: string;
+};
+
+// Oldest first, like a conversation.
+export async function listComments(requestId: string): Promise<CommentView[]> {
+  const { data, error } = await createAdminClient()
+    .from("comments")
+    .select(`id, suggestion_id, body, created_at, updated_at, ${AUTHOR_SELECT}`)
+    .eq("request_id", requestId)
+    .order("created_at", { ascending: true })
+    .returns<CommentRow[]>();
+  if (error) throw new Error(`comment lookup failed: ${error.message}`);
+
+  return data.map((c) => ({
+    id: c.id,
+    suggestionId: c.suggestion_id,
+    body: c.body,
+    createdAt: c.created_at,
+    edited: c.updated_at !== c.created_at,
+    author: toAuthor(c),
   }));
 }
 

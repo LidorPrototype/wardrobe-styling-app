@@ -228,6 +228,39 @@
     "figureLabel": "תצוגת הלוק",
     "headAlt": "האדם שמלבישים"
   },
+  "activity": {
+    "like": "אהבתי",
+    "unlike": "ביטול אהבתי",
+    "cannotLike": "אי אפשר לסמן אהבתי על לוק שלך",
+    "likersMore": "{names} ועוד {count}",
+    "sortLabel": "מיון הצעות",
+    "sort": {
+      "newest": "החדשות ביותר",
+      "liked": "הכי אהובות"
+    },
+    "commentsCount": "{count, plural, =0 {תגובות} one {תגובה אחת} other {# תגובות}}",
+    "noComments": "אין תגובות עדיין.",
+    "commentLabel": "תגובה",
+    "commentPlaceholder": "כתבו תגובה…",
+    "post": "פרסום",
+    "save": "שמירה",
+    "saving": "שומר…",
+    "cancel": "ביטול",
+    "edit": "עריכה",
+    "delete": "מחיקה",
+    "confirmDelete": "למחוק את התגובה?",
+    "edited": "נערך",
+    "owner": "בעל/ת הארון",
+    "ownerNamed": "{name} (בעל/ת הארון)",
+    "discussion": "דיון",
+    "discussionHint": "שאלות ומחשבות על הבקשה כולה.",
+    "errors": {
+      "emptyComment": "כתבו משהו קודם.",
+      "tooLong": "תגובה יכולה להכיל עד 1000 תווים.",
+      "readOnly": "הבקשה הסתיימה, ולכן אי אפשר להגיב.",
+      "saveFailed": "לא הצלחנו לשמור את התגובה. נסו שוב."
+    }
+  },
   "profile": {
     "title": "פרופיל",
     "intro": "איך אתה מופיע לאנשים שאתה מזמין.",

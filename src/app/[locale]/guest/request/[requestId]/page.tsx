@@ -2,27 +2,34 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/lib/i18n/routing";
 import { getGuestSession } from "@/lib/guests/session";
 import { leaveAsGuest } from "@/lib/actions/guests";
-import { deleteGuestSuggestion } from "@/lib/actions/suggestions";
-import { listSuggestions, loadHeadPhotoUrl } from "@/lib/suggestions/data";
+import { listComments, listSuggestions, loadHeadPhotoUrl } from "@/lib/suggestions/data";
+import { parseSort, type Viewer } from "@/lib/activity/rules";
 import { RequestSummary } from "@/components/guest/RequestSummary";
 import { GuestSignedOut } from "@/components/guest/GuestSignedOut";
 import { SuggestionList } from "@/components/suggestions/SuggestionList";
+import { CommentThread } from "@/components/activity/CommentThread";
 
 export default async function GuestRequestPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string; requestId: string }>;
+  searchParams: Promise<{ sort?: string | string[] }>;
 }) {
   const { locale, requestId } = await params;
+  const sort = parseSort((await searchParams).sort);
   const t = await getTranslations("guest");
   const tSuggestions = await getTranslations("suggestions");
+  const tActivity = await getTranslations("activity");
 
   const session = await getGuestSession(requestId);
   if (!session) return <GuestSignedOut />;
 
   const finished = session.request.status === "finished";
-  const [suggestions, headUrl] = await Promise.all([
+  const viewer: Viewer = { kind: "guest", guestIdentityId: session.identityId };
+  const [suggestions, comments, headUrl] = await Promise.all([
     listSuggestions(requestId),
+    listComments(requestId),
     loadHeadPhotoUrl(session.request.owner_id),
   ]);
 
@@ -63,12 +70,29 @@ export default async function GuestRequestPage({
         </div>
         <SuggestionList
           suggestions={suggestions}
+          comments={comments}
           headUrl={headUrl}
-          deleteActionFor={(s) =>
-            !finished && s.author.kind === "guest" && s.author.guestIdentityId === session.identityId
-              ? deleteGuestSuggestion.bind(null, locale, requestId, s.id)
-              : null
-          }
+          viewer={viewer}
+          locale={locale}
+          requestId={requestId}
+          finished={finished}
+          sort={sort}
+          basePath={`/guest/request/${requestId}`}
+        />
+      </section>
+
+      <section className="flex flex-col gap-3 border-t border-zinc-200 pt-6 dark:border-zinc-800">
+        <div>
+          <h2 className="font-medium text-zinc-950 dark:text-zinc-50">{tActivity("discussion")}</h2>
+          <p className="text-sm text-zinc-500">{tActivity("discussionHint")}</p>
+        </div>
+        <CommentThread
+          comments={comments.filter((c) => c.suggestionId === null)}
+          viewer={viewer}
+          locale={locale}
+          requestId={requestId}
+          suggestionId={null}
+          finished={finished}
         />
       </section>
     </div>
