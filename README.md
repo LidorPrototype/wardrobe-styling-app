@@ -10,8 +10,8 @@ creating an account.
 Bilingual from day one: English (LTR) and Hebrew (RTL).
 
 > **Status:** in active development. The owner side (auth, wardrobe,
-> styling requests, invite links), guest sign-in, outfit suggestions and the
-> outfit preview work; voting and comments are next. See [Milestones](#milestones).
+> styling requests, invite links), guest sign-in, outfit suggestions, the
+> outfit preview, likes and comments work; outfit status is next. See [Milestones](#milestones).
 
 ## Features so far
 
@@ -33,6 +33,10 @@ Bilingual from day one: English (LTR) and Hebrew (RTL).
 - **Outfit preview** — every outfit is drawn under the owner's head photo
   (top, bottom and shoes down the figure, accessories at the side), live in
   the builder and on each suggestion.
+- **Likes and comments** — like other people's outfits (one like each, never
+  your own) and see who liked them; sort by newest or most liked. Comment on
+  an outfit or on the request as a whole; edit or delete your own comments,
+  and the owner can remove any comment on their request.
 - **Two languages** — every screen in English and Hebrew, with correct
   right-to-left layout.
 
@@ -95,7 +99,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the PR, commit and release convention
 - [x] **4** — Invite links
 - [x] **5** — Guest identity and session
 - [x] **6** — Outfit builder and preview
-- [ ] **7** — Voting and comments
+- [x] **7** — Voting and comments
 - [ ] **8** — Outfit status and library
 - [ ] **9** — Outfit groups
 - [ ] **10** — Polish and hardening

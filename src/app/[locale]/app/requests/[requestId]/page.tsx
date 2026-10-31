@@ -12,22 +12,27 @@ import { RequestStatusBadge } from "@/components/requests/RequestStatusBadge";
 import { InvitePanel } from "@/components/requests/InvitePanel";
 import { JoinedGuests } from "@/components/requests/JoinedGuests";
 import { SuggestionList } from "@/components/suggestions/SuggestionList";
-import { listSuggestions, loadHeadPhotoUrl } from "@/lib/suggestions/data";
-import { deleteOwnerSuggestion } from "@/lib/actions/suggestions";
+import { CommentThread } from "@/components/activity/CommentThread";
+import { listComments, listSuggestions, loadHeadPhotoUrl } from "@/lib/suggestions/data";
+import { parseSort } from "@/lib/activity/rules";
 import { guestSafeDisplayName } from "@/lib/profile/displayName";
 import { BackArrow } from "@/components/layout/BackArrow";
 
 export default async function RequestDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string; requestId: string }>;
+  searchParams: Promise<{ sort?: string | string[] }>;
 }) {
   const { locale, requestId } = await params;
+  const sort = parseSort((await searchParams).sort);
   const user = await requireUser(locale);
 
   const t = await getTranslations("requests");
   const tCommon = await getTranslations("common");
   const tSuggestions = await getTranslations("suggestions");
+  const tActivity = await getTranslations("activity");
   const tOccasion = await getTranslations("enums.occasion");
   const format = await getFormatter();
   const supabase = await createClient();
@@ -75,7 +80,11 @@ export default async function RequestDetailPage({
   if (guestsError) throw new Error(`guest lookup failed: ${guestsError.message}`);
 
   // Same ownership proof as above.
-  const [suggestions, headUrl] = await Promise.all([listSuggestions(request.id), loadHeadPhotoUrl(user.id)]);
+  const [suggestions, comments, headUrl] = await Promise.all([
+    listSuggestions(request.id),
+    listComments(request.id),
+    loadHeadPhotoUrl(user.id),
+  ]);
 
   const wardrobeItems = items ?? [];
   const urlMap = await signImageUrls(wardrobeItems.map((i) => i.image_path));
@@ -170,12 +179,29 @@ export default async function RequestDetailPage({
         </div>
         <SuggestionList
           suggestions={suggestions}
+          comments={comments}
           headUrl={headUrl}
-          deleteActionFor={(s) =>
-            !finished && s.author.kind === "owner"
-              ? deleteOwnerSuggestion.bind(null, locale, request.id, s.id)
-              : null
-          }
+          viewer={{ kind: "owner" }}
+          locale={locale}
+          requestId={request.id}
+          finished={finished}
+          sort={sort}
+          basePath={`/app/requests/${request.id}`}
+        />
+      </section>
+
+      <section className="flex flex-col gap-3 border-t border-zinc-200 pt-6 dark:border-zinc-800">
+        <div>
+          <h2 className="font-medium text-zinc-950 dark:text-zinc-50">{tActivity("discussion")}</h2>
+          <p className="text-sm text-zinc-500">{tActivity("discussionHint")}</p>
+        </div>
+        <CommentThread
+          comments={comments.filter((c) => c.suggestionId === null)}
+          viewer={{ kind: "owner" }}
+          locale={locale}
+          requestId={request.id}
+          suggestionId={null}
+          finished={finished}
         />
       </section>
 
