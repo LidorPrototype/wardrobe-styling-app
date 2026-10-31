@@ -265,6 +265,7 @@
   "library": {
     "title": "Outfit library",
     "subtitle": "Every outfit you chose, wore or loved — one entry each time.",
+    "groupsLink": "Groups",
     "filterLabel": "Filter by status",
     "all": "All",
     "empty": "Your library is empty.",
@@ -296,6 +297,41 @@
     "errors": {
       "invalidDate": "Enter a valid date.",
       "tooLong": "Notes can be up to 1000 characters.",
+      "saveFailed": "Couldn't save. Please try again."
+    }
+  },
+  "groups": {
+    "title": "Groups",
+    "subtitle": "Sort outfits by person, place or season. One outfit can be in many groups.",
+    "backToLibrary": "Back to library",
+    "backToGroups": "Back to groups",
+    "empty": "No groups yet.",
+    "emptyHint": "Create one below, or from any outfit in your library.",
+    "outfitCount": "{count, plural, =0 {No outfits} one {# outfit} other {# outfits}}",
+    "newGroupTitle": "New group",
+    "nameField": "Name",
+    "namePlaceholder": "e.g. Dating, Work, Summer",
+    "descriptionField": "Description (optional)",
+    "create": "Create group",
+    "save": "Save",
+    "saving": "Saving…",
+    "saved": "Saved.",
+    "editTitle": "Edit group",
+    "delete": "Delete group",
+    "confirmDelete": "Delete this group? The outfits stay in your library.",
+    "groupEmpty": "No outfits in this group yet.",
+    "groupEmptyHint": "Open an outfit in your library and tick this group.",
+    "entryGroupsTitle": "Groups",
+    "entryGroupsHint": "Tick every group this outfit belongs to.",
+    "groupsLegend": "Groups",
+    "noGroupsYet": "You don't have any groups yet.",
+    "newGroupField": "Add to a new group (optional)",
+    "saveGroups": "Save groups",
+    "errors": {
+      "nameRequired": "Give the group a name.",
+      "nameTooLong": "Group names can be up to 40 characters.",
+      "descriptionTooLong": "The description can be up to 200 characters.",
+      "nameTaken": "You already have a group with this name.",
       "saveFailed": "Couldn't save. Please try again."
     }
   },

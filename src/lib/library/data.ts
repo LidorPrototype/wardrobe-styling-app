@@ -16,6 +16,7 @@ export type LibraryEntryView = {
   createdAt: string;
   // null once the suggestion or its request was deleted.
   request: { id: string; title: string } | null;
+  groups: { id: string; name: string }[];
   items: {
     itemId: string;
     name: string;
@@ -35,6 +36,7 @@ type EntryRow = {
   worn_on: string | null;
   created_at: string;
   source: { styling_requests: { id: string; title: string } | null } | null;
+  outfit_group_memberships: { outfit_groups: { id: string; name: string } }[];
   outfit_library_items: {
     id: string;
     item_name: string;
@@ -46,7 +48,7 @@ type EntryRow = {
 };
 
 const ENTRY_SELECT =
-  "id, title, notes, status, worn_on, created_at, source:outfit_suggestions(styling_requests(id, title)), outfit_library_items(id, item_name, item_category, slot, sort_order, clothing_items(image_path))";
+  "id, title, notes, status, worn_on, created_at, source:outfit_suggestions(styling_requests(id, title)), outfit_group_memberships(outfit_groups(id, name)), outfit_library_items(id, item_name, item_category, slot, sort_order, clothing_items(image_path))";
 
 async function toViews(rows: EntryRow[]): Promise<LibraryEntryView[]> {
   const urls = await signImageUrls(
@@ -60,6 +62,9 @@ async function toViews(rows: EntryRow[]): Promise<LibraryEntryView[]> {
     wornOn: e.worn_on,
     createdAt: e.created_at,
     request: e.source?.styling_requests ?? null,
+    groups: e.outfit_group_memberships
+      .map((m) => m.outfit_groups)
+      .sort((a, b) => a.name.localeCompare(b.name)),
     items: [...e.outfit_library_items]
       .sort((a, b) => a.sort_order - b.sort_order)
       .map((i) => ({
@@ -73,10 +78,21 @@ async function toViews(rows: EntryRow[]): Promise<LibraryEntryView[]> {
   }));
 }
 
-export async function listLibrary(status: LibraryStatus | null): Promise<LibraryEntryView[]> {
+export async function listLibrary(filter: {
+  status?: LibraryStatus | null;
+  groupId?: string;
+}): Promise<LibraryEntryView[]> {
   const supabase = await createClient();
   let query = supabase.from("outfit_library_entries").select(ENTRY_SELECT);
-  if (status) query = query.eq("status", status);
+  if (filter.status) query = query.eq("status", filter.status);
+  if (filter.groupId) {
+    const { data: members, error } = await supabase
+      .from("outfit_group_memberships")
+      .select("entry_id")
+      .eq("group_id", filter.groupId);
+    if (error) throw new Error(`group lookup failed: ${error.message}`);
+    query = query.in("id", members.map((m) => m.entry_id));
+  }
   const { data, error } = await query.order("created_at", { ascending: false }).returns<EntryRow[]>();
   if (error) throw new Error(`library lookup failed: ${error.message}`);
   return toViews(data);

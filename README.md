@@ -11,8 +11,8 @@ Bilingual from day one: English (LTR) and Hebrew (RTL).
 
 > **Status:** in active development. The owner side (auth, wardrobe,
 > styling requests, invite links), guest sign-in, outfit suggestions, the
-> outfit preview, likes and comments, and the outfit library work; outfit
-> groups are next. See [Milestones](#milestones).
+> outfit preview, likes and comments, the outfit library and outfit groups
+> work; polish and hardening is next. See [Milestones](#milestones).
 
 ## Features so far
 
@@ -42,6 +42,9 @@ Bilingual from day one: English (LTR) and Hebrew (RTL).
   Chosen, worn and favorite save a new library entry every time, with its
   own date and notes, so wearing the same outfit twice is two entries.
   Entries keep their items even if the wardrobe changes later.
+- **Outfit groups** — sort library entries into your own groups (a person,
+  a place, a season); one entry can sit in many groups, and each group has
+  its own page.
 - **Two languages** — every screen in English and Hebrew, with correct
   right-to-left layout.
 
@@ -106,5 +109,5 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the PR, commit and release convention
 - [x] **6** — Outfit builder and preview
 - [x] **7** — Voting and comments
 - [x] **8** — Outfit status and library
-- [ ] **9** — Outfit groups
+- [x] **9** — Outfit groups
 - [ ] **10** — Polish and hardening

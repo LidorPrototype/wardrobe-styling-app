@@ -10,6 +10,10 @@ import { deleteLibraryEntry, updateLibraryEntry } from "@/lib/actions/library";
 import { OutfitFigure } from "@/components/suggestions/OutfitFigure";
 import { OutfitStatusBadge } from "@/components/library/OutfitStatusBadge";
 import { LibraryEntryForm } from "@/components/library/LibraryEntryForm";
+import { EntryGroupsForm } from "@/components/groups/EntryGroupsForm";
+import { GroupChips } from "@/components/groups/GroupChips";
+import { listGroups } from "@/lib/groups/data";
+import { setEntryGroups } from "@/lib/actions/groups";
 import { BackArrow } from "@/components/layout/BackArrow";
 
 export default async function LibraryEntryPage({
@@ -24,9 +28,10 @@ export default async function LibraryEntryPage({
   // RLS: another owner's entry yields nothing.
   const entry = await getLibraryEntry(entryId);
   if (!entry) notFound();
-  const headUrl = await loadHeadPhotoUrl(user.id);
+  const [headUrl, groups] = await Promise.all([loadHeadPhotoUrl(user.id), listGroups()]);
 
   const t = await getTranslations("library");
+  const tGroups = await getTranslations("groups");
   const tSuggestions = await getTranslations("suggestions");
   const tSlot = await getTranslations("enums.slot");
   const format = await getFormatter();
@@ -55,6 +60,9 @@ export default async function LibraryEntryPage({
             </>
           )}
         </p>
+        <div className="mt-2">
+          <GroupChips groups={entry.groups} />
+        </div>
       </div>
 
       <div className="flex flex-wrap items-start gap-6">
@@ -73,6 +81,18 @@ export default async function LibraryEntryPage({
           ))}
         </ul>
       </div>
+
+      <section className="flex max-w-xl flex-col gap-3 border-t border-zinc-200 pt-6 dark:border-zinc-800">
+        <div>
+          <h2 className="font-medium text-zinc-950 dark:text-zinc-50">{tGroups("entryGroupsTitle")}</h2>
+          <p className="text-sm text-zinc-500">{tGroups("entryGroupsHint")}</p>
+        </div>
+        <EntryGroupsForm
+          groups={groups}
+          memberOf={entry.groups.map((g) => g.id)}
+          action={setEntryGroups.bind(null, locale, entry.id)}
+        />
+      </section>
 
       <section className="flex max-w-xl flex-col gap-3 border-t border-zinc-200 pt-6 dark:border-zinc-800">
         <h2 className="font-medium text-zinc-950 dark:text-zinc-50">{t("detailsTitle")}</h2>
