@@ -15,6 +15,7 @@ import { SuggestionList } from "@/components/suggestions/SuggestionList";
 import { CommentThread } from "@/components/activity/CommentThread";
 import { listComments, listSuggestions, loadHeadPhotoUrl } from "@/lib/suggestions/data";
 import { parseSort } from "@/lib/activity/rules";
+import { countLibraryEntries } from "@/lib/library/data";
 import { guestSafeDisplayName } from "@/lib/profile/displayName";
 import { BackArrow } from "@/components/layout/BackArrow";
 
@@ -85,6 +86,7 @@ export default async function RequestDetailPage({
     listComments(request.id),
     loadHeadPhotoUrl(user.id),
   ]);
+  const libraryCounts = await countLibraryEntries(suggestions.map((s) => s.id));
 
   const wardrobeItems = items ?? [];
   const urlMap = await signImageUrls(wardrobeItems.map((i) => i.image_path));
@@ -187,6 +189,7 @@ export default async function RequestDetailPage({
           finished={finished}
           sort={sort}
           basePath={`/app/requests/${request.id}`}
+          libraryCounts={libraryCounts}
         />
       </section>
 

@@ -37,6 +37,7 @@
     "defaultWardrobe": "ארון ברירת מחדל",
     "navWardrobe": "הארון",
     "navRequests": "בקשות",
+    "navLibrary": "ספרייה",
     "navProfile": "פרופיל"
   },
   "wardrobe": {
@@ -261,6 +262,43 @@
       "saveFailed": "לא הצלחנו לשמור את התגובה. נסו שוב."
     }
   },
+  "library": {
+    "title": "ספריית הלוקים",
+    "subtitle": "כל לוק שבחרת, לבשת או אהבת — רשומה נפרדת בכל פעם.",
+    "filterLabel": "סינון לפי סטטוס",
+    "all": "הכול",
+    "empty": "הספרייה ריקה.",
+    "emptyFiltered": "אין עדיין לוקים בסטטוס הזה.",
+    "emptyHint": "בבקשה, סמנו לוק כנבחר, נלבש או מועדף כדי לשמור אותו כאן.",
+    "wornOn": "נלבש ב-{date}",
+    "savedOn": "נשמר ב-{date}",
+    "fromRequest": "מתוך: {title}",
+    "backToLibrary": "חזרה לספרייה",
+    "itemDeleted": "(נמחק מהארון)",
+    "detailsTitle": "תאריך והערות",
+    "wornOnField": "תאריך לבישה",
+    "notesField": "הערות",
+    "notesPlaceholder": "איפה לבשת, איך היה…",
+    "save": "שמירה",
+    "saving": "שומר…",
+    "saved": "נשמר.",
+    "delete": "הסרה מהספרייה",
+    "confirmDelete": "להסיר את הרשומה מהספרייה? ההצעה עצמה נשארת.",
+    "decide": "ההחלטה שלך:",
+    "actions": {
+      "chosen": "בחירה",
+      "worn": "סימון כנלבש",
+      "favorite": "מועדף",
+      "rejected": "דחייה"
+    },
+    "clear": "ניקוי",
+    "savedCount": "{count, plural, one {נשמר בספרייה פעם אחת} other {נשמר בספרייה # פעמים}}",
+    "errors": {
+      "invalidDate": "יש להזין תאריך תקין.",
+      "tooLong": "הערות יכולות להכיל עד 1000 תווים.",
+      "saveFailed": "השמירה נכשלה. נסו שוב."
+    }
+  },
   "profile": {
     "title": "פרופיל",
     "intro": "איך אתה מופיע לאנשים שאתה מזמין.",
@@ -374,6 +412,13 @@
       "outerwear": "שכבה חיצונית",
       "accessory": "אקססוריז",
       "other": "אחר"
+    },
+    "outfitStatus": {
+      "suggested": "הוצע",
+      "chosen": "נבחר",
+      "worn": "נלבש",
+      "favorite": "מועדף",
+      "rejected": "נדחה"
     }
   }
 }
