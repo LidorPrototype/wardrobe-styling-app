@@ -171,7 +171,6 @@
     "signedInAs": "You're in as {nickname}",
     "exit": "Exit",
     "finishedReadOnly": "This request is finished. You can still look, but nothing can be changed.",
-    "builderSoon": "The wardrobe and outfit builder are coming soon.",
     "signedOutTitle": "You're not signed in to this request",
     "signedOutBody": "Open the invite link you were sent and sign in with your nickname and passphrase.",
     "errors": {
@@ -184,6 +183,46 @@
       "wrongPassphrase": "That nickname is already taken here, and the passphrase doesn't match. If it's you, check the passphrase — otherwise pick a different nickname.",
       "locked": "Too many wrong tries for this nickname. Try again in 15 minutes.",
       "joinFailed": "Couldn't join right now. Please try again."
+    }
+  },
+  "suggestions": {
+    "title": "{count, plural, =0 {Suggestions} one {# suggestion} other {# suggestions}}",
+    "none": "No outfit suggestions yet.",
+    "suggestAnOutfit": "Suggest an outfit",
+    "builderTitle": "Suggest an outfit",
+    "outfit": "Outfit",
+    "wardrobe": "Wardrobe",
+    "emptyWardrobe": "There's nothing in this wardrobe yet.",
+    "filterCategory": "Filter by category",
+    "allCategories": "All categories",
+    "filterTag": "Filter by tag",
+    "allTags": "All tags",
+    "addTo": "Add to {slot}",
+    "swapInto": "Swap into {slot}",
+    "slotFull": "{slot} is full",
+    "remove": "Remove",
+    "removeItem": "Remove {name}",
+    "titleField": "Title (optional)",
+    "titlePlaceholder": "e.g. Classic black tie",
+    "notesField": "Notes (optional)",
+    "notesPlaceholder": "Why this works, what to change…",
+    "submit": "Submit suggestion",
+    "submitting": "Submitting…",
+    "cancel": "Cancel",
+    "untitled": "Untitled outfit",
+    "byGuest": "by {name}",
+    "byOwnerNamed": "by {name} (owner)",
+    "byOwner": "by the owner",
+    "delete": "Delete",
+    "confirmDelete": "Delete this suggestion? This cannot be undone.",
+    "errors": {
+      "noItems": "Add at least one item.",
+      "slotFull": "One of the slots has too many items.",
+      "invalidItem": "One of the items isn't available anymore. Please rebuild the outfit.",
+      "tooLong": "The title or notes are too long.",
+      "notSignedIn": "You're not signed in to this request anymore.",
+      "requestFinished": "This request is finished, so it can't take new suggestions.",
+      "saveFailed": "Couldn't save the suggestion. Please try again."
     }
   },
   "enums": {
@@ -278,6 +317,14 @@
     "requestStatus": {
       "open": "Open",
       "finished": "Finished"
+    },
+    "slot": {
+      "top": "Top",
+      "bottom": "Bottom",
+      "shoes": "Shoes",
+      "outerwear": "Outerwear",
+      "accessory": "Accessories",
+      "other": "Other"
     }
   }
 }

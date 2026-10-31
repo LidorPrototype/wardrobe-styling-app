@@ -171,7 +171,6 @@
     "signedInAs": "נכנסת בתור {nickname}",
     "exit": "יציאה",
     "finishedReadOnly": "הבקשה הסתיימה. אפשר עדיין לצפות, אבל לא לשנות דבר.",
-    "builderSoon": "הארון ובניית הלוקים יגיעו בקרוב.",
     "signedOutTitle": "לא נכנסת לבקשה הזו",
     "signedOutBody": "פתח את קישור ההזמנה שקיבלת והיכנס עם הכינוי והסיסמה שלך.",
     "errors": {
@@ -184,6 +183,46 @@
       "wrongPassphrase": "הכינוי הזה כבר תפוס כאן, והסיסמה לא תואמת. אם זה אתה, בדוק את הסיסמה — אחרת בחר כינוי אחר.",
       "locked": "יותר מדי ניסיונות שגויים לכינוי הזה. נסה שוב בעוד 15 דקות.",
       "joinFailed": "לא ניתן להצטרף כרגע. נסה שוב."
+    }
+  },
+  "suggestions": {
+    "title": "{count, plural, =0 {הצעות} one {הצעה אחת} other {# הצעות}}",
+    "none": "עדיין אין הצעות ללוק.",
+    "suggestAnOutfit": "הצעת לוק",
+    "builderTitle": "הצעת לוק",
+    "outfit": "הלוק",
+    "wardrobe": "הארון",
+    "emptyWardrobe": "עדיין אין כלום בארון הזה.",
+    "filterCategory": "סינון לפי קטגוריה",
+    "allCategories": "כל הקטגוריות",
+    "filterTag": "סינון לפי תגית",
+    "allTags": "כל התגיות",
+    "addTo": "הוספה ל{slot}",
+    "swapInto": "החלפה ב{slot}",
+    "slotFull": "{slot} מלא",
+    "remove": "הסרה",
+    "removeItem": "הסרת {name}",
+    "titleField": "כותרת (רשות)",
+    "titlePlaceholder": "למשל: ערב קלאסי",
+    "notesField": "הערות (רשות)",
+    "notesPlaceholder": "למה זה עובד, מה כדאי לשנות…",
+    "submit": "שליחת הצעה",
+    "submitting": "שולח…",
+    "cancel": "ביטול",
+    "untitled": "לוק ללא שם",
+    "byGuest": "מאת {name}",
+    "byOwnerNamed": "מאת {name} (בעל/ת הארון)",
+    "byOwner": "מאת בעל/ת הארון",
+    "delete": "מחיקה",
+    "confirmDelete": "למחוק את ההצעה? לא ניתן לבטל פעולה זו.",
+    "errors": {
+      "noItems": "יש להוסיף לפחות פריט אחד.",
+      "slotFull": "באחד המקומות יש יותר מדי פריטים.",
+      "invalidItem": "אחד הפריטים כבר לא זמין. בנה את הלוק מחדש.",
+      "tooLong": "הכותרת או ההערות ארוכות מדי.",
+      "notSignedIn": "כבר לא נכנסת לבקשה הזו.",
+      "requestFinished": "הבקשה הסתיימה ולא מקבלת הצעות חדשות.",
+      "saveFailed": "לא ניתן לשמור את ההצעה. נסה שוב."
     }
   },
   "enums": {
@@ -278,6 +317,14 @@
     "requestStatus": {
       "open": "פתוחה",
       "finished": "הסתיימה"
+    },
+    "slot": {
+      "top": "חלק עליון",
+      "bottom": "חלק תחתון",
+      "shoes": "נעליים",
+      "outerwear": "שכבה חיצונית",
+      "accessory": "אקססוריז",
+      "other": "אחר"
     }
   }
 }
