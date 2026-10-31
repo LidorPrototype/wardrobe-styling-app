@@ -57,6 +57,12 @@ export const ClothingItemSchema = z
 
 export type ClothingItemInput = z.infer<typeof ClothingItemSchema>;
 
+export function imageExtension(type: string) {
+  if (type === "image/png") return "png";
+  if (type === "image/webp") return "webp";
+  return "jpg";
+}
+
 export function validateImage(file: File | null, { required }: { required: boolean }) {
   if (!file || file.size === 0) {
     return required ? "imageRequired" : null;

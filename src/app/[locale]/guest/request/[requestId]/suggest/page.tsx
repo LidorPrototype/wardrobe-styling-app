@@ -2,7 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { redirect } from "@/lib/i18n/routing";
 import { getGuestSession } from "@/lib/guests/session";
 import { createGuestSuggestion } from "@/lib/actions/suggestions";
-import { loadRequestWardrobe } from "@/lib/suggestions/data";
+import { loadHeadPhotoUrl, loadRequestWardrobe } from "@/lib/suggestions/data";
 import { GuestSignedOut } from "@/components/guest/GuestSignedOut";
 import { OutfitBuilder } from "@/components/suggestions/OutfitBuilder";
 
@@ -20,7 +20,10 @@ export default async function GuestSuggestPage({
     redirect({ href: `/guest/request/${requestId}`, locale });
   }
 
-  const items = await loadRequestWardrobe(session.request.wardrobe_id);
+  const [items, headUrl] = await Promise.all([
+    loadRequestWardrobe(session.request.wardrobe_id),
+    loadHeadPhotoUrl(session.request.owner_id),
+  ]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -30,6 +33,7 @@ export default async function GuestSuggestPage({
       </div>
       <OutfitBuilder
         items={items}
+        headUrl={headUrl}
         action={createGuestSuggestion.bind(null, locale, requestId)}
         cancelHref={`/guest/request/${requestId}`}
       />

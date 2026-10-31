@@ -23,6 +23,7 @@ export type GuestSession = {
     notes: string | null;
     status: string;
     wardrobe_id: string;
+    owner_id: string;
     ownerName: string | null;
   };
 };
@@ -67,7 +68,7 @@ export async function getGuestSession(requestId: string): Promise<GuestSession |
   const { data, error } = await admin
     .from("guest_sessions")
     .select(
-      "id, last_seen_at, guest_identities!inner(id, nickname), styling_requests!inner(id, title, occasion, event_at, notes, status, wardrobe_id, owner:profiles(display_name))",
+      "id, last_seen_at, guest_identities!inner(id, nickname), styling_requests!inner(id, title, occasion, event_at, notes, status, wardrobe_id, owner_id, owner:profiles(display_name))",
     )
     .eq("session_token_hash", hashSecretToken(token))
     .eq("request_id", requestId)

@@ -6,6 +6,7 @@ import { requireUser } from "@/lib/auth/requireUser";
 import { createClient } from "@/lib/supabase/server";
 import {
   ClothingItemSchema,
+  imageExtension,
   parseTags,
   validateImage,
   type WardrobeFormState,
@@ -36,12 +37,6 @@ function fieldErrorsFrom(error: { issues: { path: PropertyKey[]; message: string
     if (key && !out[key]) out[key] = issue.message;
   }
   return out;
-}
-
-function extensionFor(type: string) {
-  if (type === "image/png") return "png";
-  if (type === "image/webp") return "webp";
-  return "jpg";
 }
 
 export async function createClothingItem(
@@ -104,7 +99,7 @@ export async function createClothingItem(
     return { error: "saveFailed", values };
   }
 
-  const path = `${user.id}/${wardrobe.id}/${item.id}/original.${extensionFor(image!.type)}`;
+  const path = `${user.id}/${wardrobe.id}/${item.id}/original.${imageExtension(image!.type)}`;
   const { error: uploadError } = await supabase.storage
     .from(BUCKET)
     .upload(path, image!, { contentType: image!.type, upsert: true });
@@ -163,7 +158,7 @@ export async function updateClothingItem(
 
   let imagePath = existing.image_path;
   if (image && image.size > 0) {
-    const path = `${user.id}/${existing.wardrobe_id}/${itemId}/original.${extensionFor(image.type)}`;
+    const path = `${user.id}/${existing.wardrobe_id}/${itemId}/original.${imageExtension(image.type)}`;
     const { error: uploadError } = await supabase.storage
       .from(BUCKET)
       .upload(path, image, { contentType: image.type, upsert: true });

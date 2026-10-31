@@ -4,7 +4,7 @@ import { Link, redirect } from "@/lib/i18n/routing";
 import { requireUser } from "@/lib/auth/requireUser";
 import { createClient } from "@/lib/supabase/server";
 import { createOwnerSuggestion } from "@/lib/actions/suggestions";
-import { loadRequestWardrobe } from "@/lib/suggestions/data";
+import { loadHeadPhotoUrl, loadRequestWardrobe } from "@/lib/suggestions/data";
 import { OutfitBuilder } from "@/components/suggestions/OutfitBuilder";
 import { BackArrow } from "@/components/layout/BackArrow";
 
@@ -14,7 +14,7 @@ export default async function OwnerSuggestPage({
   params: Promise<{ locale: string; requestId: string }>;
 }) {
   const { locale, requestId } = await params;
-  await requireUser(locale);
+  const user = await requireUser(locale);
   const t = await getTranslations("suggestions");
   const tRequests = await getTranslations("requests");
   const supabase = await createClient();
@@ -30,7 +30,10 @@ export default async function OwnerSuggestPage({
     redirect({ href: `/app/requests/${requestId}`, locale });
   }
 
-  const items = await loadRequestWardrobe(request.wardrobe_id);
+  const [items, headUrl] = await Promise.all([
+    loadRequestWardrobe(request.wardrobe_id),
+    loadHeadPhotoUrl(user.id),
+  ]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -46,6 +49,7 @@ export default async function OwnerSuggestPage({
       </div>
       <OutfitBuilder
         items={items}
+        headUrl={headUrl}
         action={createOwnerSuggestion.bind(null, locale, requestId)}
         cancelHref={`/app/requests/${requestId}`}
       />
