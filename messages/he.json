@@ -265,6 +265,7 @@
   "library": {
     "title": "ספריית הלוקים",
     "subtitle": "כל לוק שבחרת, לבשת או אהבת — רשומה נפרדת בכל פעם.",
+    "groupsLink": "קבוצות",
     "filterLabel": "סינון לפי סטטוס",
     "all": "הכול",
     "empty": "הספרייה ריקה.",
@@ -296,6 +297,41 @@
     "errors": {
       "invalidDate": "יש להזין תאריך תקין.",
       "tooLong": "הערות יכולות להכיל עד 1000 תווים.",
+      "saveFailed": "השמירה נכשלה. נסו שוב."
+    }
+  },
+  "groups": {
+    "title": "קבוצות",
+    "subtitle": "מיינו לוקים לפי אדם, מקום או עונה. לוק אחד יכול להיות בכמה קבוצות.",
+    "backToLibrary": "חזרה לספרייה",
+    "backToGroups": "חזרה לקבוצות",
+    "empty": "אין עדיין קבוצות.",
+    "emptyHint": "צרו קבוצה למטה, או מתוך כל לוק בספרייה.",
+    "outfitCount": "{count, plural, =0 {אין לוקים} one {לוק אחד} other {# לוקים}}",
+    "newGroupTitle": "קבוצה חדשה",
+    "nameField": "שם",
+    "namePlaceholder": "לדוגמה: דייטים, עבודה, קיץ",
+    "descriptionField": "תיאור (לא חובה)",
+    "create": "יצירת קבוצה",
+    "save": "שמירה",
+    "saving": "שומר…",
+    "saved": "נשמר.",
+    "editTitle": "עריכת קבוצה",
+    "delete": "מחיקת קבוצה",
+    "confirmDelete": "למחוק את הקבוצה? הלוקים נשארים בספרייה.",
+    "groupEmpty": "אין עדיין לוקים בקבוצה הזו.",
+    "groupEmptyHint": "פתחו לוק בספרייה וסמנו את הקבוצה.",
+    "entryGroupsTitle": "קבוצות",
+    "entryGroupsHint": "סמנו את כל הקבוצות שהלוק הזה שייך אליהן.",
+    "groupsLegend": "קבוצות",
+    "noGroupsYet": "אין לך עדיין קבוצות.",
+    "newGroupField": "הוספה לקבוצה חדשה (לא חובה)",
+    "saveGroups": "שמירת קבוצות",
+    "errors": {
+      "nameRequired": "תנו לקבוצה שם.",
+      "nameTooLong": "שם קבוצה יכול להכיל עד 40 תווים.",
+      "descriptionTooLong": "התיאור יכול להכיל עד 200 תווים.",
+      "nameTaken": "כבר יש לך קבוצה בשם הזה.",
       "saveFailed": "השמירה נכשלה. נסו שוב."
     }
   },
