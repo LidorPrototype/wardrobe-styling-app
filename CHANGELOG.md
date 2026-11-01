@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.0](https://github.com/LidorPrototype/wardrobe-styling-app/compare/v0.8.0...v0.9.0) (2026-11-01)
+
+
+### Features
+
+* outfit groups (Milestone 9) ([#28](https://github.com/LidorPrototype/wardrobe-styling-app/issues/28)) ([9c872fd](https://github.com/LidorPrototype/wardrobe-styling-app/commit/9c872fd4234657c8ab2c884730e619153255b398))
+* outfit status and library (Milestone 8) ([#26](https://github.com/LidorPrototype/wardrobe-styling-app/issues/26)) ([3c00b53](https://github.com/LidorPrototype/wardrobe-styling-app/commit/3c00b53d9c51e2106b8e44beb7430549bef49dc7))
+
 ## [0.8.0](https://github.com/LidorPrototype/wardrobe-styling-app/compare/v0.7.0...v0.8.0) (2026-10-31)
 
 
