@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { isUuid } from "@/lib/validation/ids";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/lib/i18n/routing";
 import { requireUser } from "@/lib/auth/requireUser";
@@ -18,21 +19,24 @@ export default async function EditClothingItemPage({
   const t = await getTranslations("wardrobe");
   const supabase = await createClient();
 
+  if (!isUuid(itemId)) notFound();
+
   // RLS: another owner's id yields nothing.
-  const { data: item } = await supabase
+  const { data: item, error } = await supabase
     .from("clothing_items")
     .select(
       "id, name, category, subcategory, color, season, formality, brand, size, notes, image_path",
     )
     .eq("id", itemId)
     .maybeSingle();
-
+  if (error) throw new Error(`item lookup failed: ${error.message}`);
   if (!item) notFound();
 
-  const { data: tagRows } = await supabase
+  const { data: tagRows, error: tagsError } = await supabase
     .from("clothing_item_tags")
     .select("tag")
     .eq("clothing_item_id", itemId);
+  if (tagsError) throw new Error(`tag lookup failed: ${tagsError.message}`);
 
   const imageUrl = await signImageUrl(item.image_path);
 
@@ -63,7 +67,7 @@ export default async function EditClothingItemPage({
           brand: item.brand ?? "",
           size: item.size ?? "",
           notes: item.notes ?? "",
-          tags: (tagRows ?? []).map((r) => r.tag),
+          tags: tagRows.map((r) => r.tag),
         }}
       />
     </div>

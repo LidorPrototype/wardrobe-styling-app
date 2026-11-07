@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import * as z from "zod";
+import { isUuid } from "@/lib/validation/ids";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/lib/i18n/routing";
 import { requireUser } from "@/lib/auth/requireUser";
@@ -15,7 +15,7 @@ import { BackArrow } from "@/components/layout/BackArrow";
 export default async function GroupPage({ params }: { params: Promise<{ locale: string; groupId: string }> }) {
   const { locale, groupId } = await params;
   const user = await requireUser(locale);
-  if (!z.uuid().safeParse(groupId).success) notFound();
+  if (!isUuid(groupId)) notFound();
 
   // RLS: another owner's group yields nothing.
   const group = await getGroup(groupId);

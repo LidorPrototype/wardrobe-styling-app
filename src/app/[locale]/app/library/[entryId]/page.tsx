@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import * as z from "zod";
+import { isUuid } from "@/lib/validation/ids";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { Link } from "@/lib/i18n/routing";
 import { requireUser } from "@/lib/auth/requireUser";
@@ -23,7 +23,7 @@ export default async function LibraryEntryPage({
 }) {
   const { locale, entryId } = await params;
   const user = await requireUser(locale);
-  if (!z.uuid().safeParse(entryId).success) notFound();
+  if (!isUuid(entryId)) notFound();
 
   // RLS: another owner's entry yields nothing.
   const entry = await getLibraryEntry(entryId);

@@ -74,15 +74,18 @@ export async function removeHeadPhoto(locale: string) {
   const user = await requireUser(locale);
   const supabase = await createClient();
 
-  const { data: profile } = await supabase
+  const { data: profile, error: lookupError } = await supabase
     .from("profiles")
     .select("head_photo_path")
     .eq("id", user.id)
     .single();
-  if (!profile?.head_photo_path) return;
+  if (lookupError) throw new Error(`profile lookup failed: ${lookupError.message}`);
+  if (!profile.head_photo_path) return;
 
+  // Unlink first: a stray file is invisible, a link to a missing file is not.
+  const { error: updateError } = await supabase.from("profiles").update({ head_photo_path: null }).eq("id", user.id);
+  if (updateError) throw new Error(`could not remove head photo: ${updateError.message}`);
   await supabase.storage.from(WARDROBE_BUCKET).remove([profile.head_photo_path]);
-  await supabase.from("profiles").update({ head_photo_path: null }).eq("id", user.id);
 
   revalidatePath(`/${locale}/app`, "layout");
 }

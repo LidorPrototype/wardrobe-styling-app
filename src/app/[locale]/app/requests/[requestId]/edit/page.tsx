@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { isUuid } from "@/lib/validation/ids";
 import { getTranslations } from "next-intl/server";
 import { Link, redirect } from "@/lib/i18n/routing";
 import { requireUser } from "@/lib/auth/requireUser";
@@ -18,12 +19,14 @@ export default async function EditRequestPage({
   const t = await getTranslations("requests");
   const supabase = await createClient();
 
-  const { data: request } = await supabase
+  if (!isUuid(requestId)) notFound();
+
+  const { data: request, error } = await supabase
     .from("styling_requests")
     .select("id, title, occasion, event_at, notes, status")
     .eq("id", requestId)
     .maybeSingle();
-
+  if (error) throw new Error(`request lookup failed: ${error.message}`);
   if (!request) notFound();
 
   if (request.status === "finished") {

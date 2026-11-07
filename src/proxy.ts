@@ -1,14 +1,26 @@
 import createMiddleware from "next-intl/middleware";
 import { createServerClient } from "@supabase/ssr";
-import { type NextRequest } from "next/server";
+import { NextRequest } from "next/server";
 import { routing } from "@/lib/i18n/routing";
+import { contentSecurityPolicy } from "@/lib/security/csp";
 
 const handleI18nRouting = createMiddleware(routing);
 
-// Locale routing + Supabase session refresh only. Access control is enforced
-// by requireUser() and RLS, not here.
-export async function proxy(request: NextRequest) {
+// Locale routing, the per-request CSP nonce, and Supabase session refresh.
+// Access control is enforced by requireUser() and RLS, not here.
+export async function proxy(incoming: NextRequest) {
+  const nonce = btoa(crypto.randomUUID());
+  const csp = contentSecurityPolicy(nonce, { dev: process.env.NODE_ENV === "development" });
+
+  // Next.js reads the nonce from the request's CSP header while rendering;
+  // next-intl passes these headers on.
+  const headers = new Headers(incoming.headers);
+  headers.set("x-nonce", nonce);
+  headers.set("Content-Security-Policy", csp);
+  const request = new NextRequest(incoming, { headers });
+
   const response = handleI18nRouting(request);
+  response.headers.set("Content-Security-Policy", csp);
 
   // Rotated auth cookies go on both the request (for downstream rendering) and
   // the next-intl response.

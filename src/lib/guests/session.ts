@@ -4,9 +4,8 @@ import { cookies } from "next/headers";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { generateSecretToken, hashSecretToken } from "@/lib/invites/token";
 import { guestSafeDisplayName } from "@/lib/profile/displayName";
-import { isSessionExpired, SESSION_DAYS } from "@/lib/guests/rules";
-
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+import { isSessionExpired, SESSION_DAYS, sessionCutoff } from "@/lib/guests/rules";
+import { isUuid } from "@/lib/validation/ids";
 
 // One cookie per request, so a browser can be a guest on several requests.
 const cookieName = (requestId: string) => `guest_${requestId}`;
@@ -49,6 +48,13 @@ export async function startGuestSession(identityId: string, requestId: string) {
   });
   if (error) throw new Error(`could not start guest session: ${error.message}`);
 
+  // Housekeeping on sign-in: expired sessions are useless and only pile up.
+  const { error: cleanupError } = await admin
+    .from("guest_sessions")
+    .delete()
+    .lt("last_seen_at", sessionCutoff().toISOString());
+  if (cleanupError) throw new Error(`could not clear expired sessions: ${cleanupError.message}`);
+
   (await cookies()).set(cookieName(requestId), token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -59,8 +65,7 @@ export async function startGuestSession(identityId: string, requestId: string) {
 }
 
 export async function getGuestSession(requestId: string): Promise<GuestSession | null> {
-  // A malformed id would make Postgres reject the uuid comparison.
-  if (!UUID.test(requestId)) return null;
+  if (!isUuid(requestId)) return null;
   const token = (await cookies()).get(cookieName(requestId))?.value;
   if (!token) return null;
 

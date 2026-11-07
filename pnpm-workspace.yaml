@@ -20,3 +20,11 @@ minimumReleaseAgeExclude:
   - next-intl@4.13.3
   - next@16.2.11
   - use-intl@4.13.3
+# Patched versions for vulnerable transitive dependencies (Dependabot alerts).
+# Drop an entry once the packages that pull it in have caught up.
+overrides:
+  'js-yaml@>=4.0.0 <4.3.2': '^4.3.2'
+  'browserslist@<4.28.7': '^4.28.7'
+  'minimatch@>=7.0.0 <11.0.1': '^11.0.1'
+  'brace-expansion@<1.1.21': '^1.1.21'
+  'brace-expansion@>=4.0.0 <5.0.12': '^5.0.12'

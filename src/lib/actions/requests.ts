@@ -133,13 +133,14 @@ export async function setRequestStatus(
   await requireUser(locale);
   const supabase = await createClient();
 
-  await supabase
+  const { error } = await supabase
     .from("styling_requests")
     .update({
       status,
       finished_at: status === "finished" ? new Date().toISOString() : null,
     })
     .eq("id", requestId);
+  if (error) throw new Error(`could not change request status: ${error.message}`);
 
   revalidatePath(`/${locale}/app/requests`);
   revalidatePath(`/${locale}/app/requests/${requestId}`);
@@ -149,7 +150,8 @@ export async function deleteStylingRequest(locale: string, requestId: string) {
   await requireUser(locale);
   const supabase = await createClient();
 
-  await supabase.from("styling_requests").delete().eq("id", requestId);
+  const { error } = await supabase.from("styling_requests").delete().eq("id", requestId);
+  if (error) throw new Error(`could not delete request: ${error.message}`);
 
   revalidatePath(`/${locale}/app/requests`);
   redirect({ href: "/app/requests", locale });

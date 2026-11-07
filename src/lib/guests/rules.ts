@@ -31,6 +31,11 @@ export function isLocked(lockedUntil: string | null, now = new Date()): boolean 
   return lockedUntil !== null && new Date(lockedUntil) > now;
 }
 
+// Sessions not seen since this moment have expired.
+export function sessionCutoff(now = new Date()): Date {
+  return new Date(now.getTime() - SESSION_DAYS * 24 * 60 * 60 * 1000);
+}
+
 export function isSessionExpired(lastSeenAt: string, now = new Date()): boolean {
-  return now.getTime() - new Date(lastSeenAt).getTime() > SESSION_DAYS * 24 * 60 * 60 * 1000;
+  return new Date(lastSeenAt) < sessionCutoff(now);
 }

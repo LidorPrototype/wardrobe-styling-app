@@ -38,7 +38,7 @@ export function LibraryEntryForm({
 
       <label className="flex flex-col gap-1 text-sm">
         <span className="text-zinc-700 dark:text-zinc-300">{t("wornOnField")}</span>
-        <input type="date" name="wornOn" defaultValue={wornOn ?? ""} className={`${inputClass} w-fit`} />
+        <input type="date" name="wornOn" defaultValue={state?.values?.wornOn ?? wornOn ?? ""} className={`${inputClass} w-fit`} />
       </label>
 
       <label className="flex flex-col gap-1 text-sm">
@@ -47,7 +47,7 @@ export function LibraryEntryForm({
           name="notes"
           rows={3}
           maxLength={LIBRARY_NOTES_MAX}
-          defaultValue={notes ?? ""}
+          defaultValue={state?.values?.notes ?? notes ?? ""}
           placeholder={t("notesPlaceholder")}
           className={inputClass}
         />

@@ -13,13 +13,14 @@ export default async function DashboardPage({
   const t = await getTranslations("app");
   const supabase = await createClient();
 
-  const { data: wardrobe } = await supabase
+  const { data: wardrobe, error } = await supabase
     .from("wardrobes")
     .select("name")
     .eq("owner_id", user.id)
     .order("created_at", { ascending: true })
     .limit(1)
     .maybeSingle();
+  if (error) throw new Error(`wardrobe lookup failed: ${error.message}`);
 
   return (
     <div className="flex flex-col gap-4">

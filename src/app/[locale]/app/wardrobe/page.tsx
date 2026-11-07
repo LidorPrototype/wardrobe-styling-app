@@ -25,12 +25,13 @@ export default async function WardrobePage({
   const t = await getTranslations("wardrobe");
   const supabase = await createClient();
 
-  const { data: ownedTags } = await supabase
+  const { data: ownedTags, error: tagsError } = await supabase
     .from("clothing_item_tags")
     .select("tag, clothing_items!inner(owner_id)")
     .eq("clothing_items.owner_id", user.id);
+  if (tagsError) throw new Error(`tag lookup failed: ${tagsError.message}`);
 
-  const allTags = [...new Set((ownedTags ?? []).map((r) => r.tag))].sort((a, b) =>
+  const allTags = [...new Set(ownedTags.map((r) => r.tag))].sort((a, b) =>
     a.localeCompare(b),
   );
 
@@ -46,16 +47,17 @@ export default async function WardrobePage({
 
   if (filters.tag) {
     // Filtering the embedded tags instead would truncate each item's tag list.
-    const { data: tagged } = await supabase
+    const { data: tagged, error: taggedError } = await supabase
       .from("clothing_item_tags")
       .select("clothing_item_id, clothing_items!inner(owner_id)")
       .eq("tag", filters.tag)
       .eq("clothing_items.owner_id", user.id);
-    query = query.in("id", (tagged ?? []).map((r) => r.clothing_item_id));
+    if (taggedError) throw new Error(`tag lookup failed: ${taggedError.message}`);
+    query = query.in("id", tagged.map((r) => r.clothing_item_id));
   }
 
-  const { data: items } = await query;
-  const rows = items ?? [];
+  const { data: rows, error: itemsError } = await query;
+  if (itemsError) throw new Error(`wardrobe lookup failed: ${itemsError.message}`);
 
   const [urlMap, tagRows] = await Promise.all([
     signImageUrls(rows.map((r) => r.image_path)),
@@ -64,11 +66,12 @@ export default async function WardrobePage({
           .from("clothing_item_tags")
           .select("clothing_item_id, tag")
           .in("clothing_item_id", rows.map((r) => r.id))
-      : Promise.resolve({ data: [] as { clothing_item_id: string; tag: string }[] }),
+      : Promise.resolve({ data: [] as { clothing_item_id: string; tag: string }[], error: null }),
   ]);
+  if (tagRows.error) throw new Error(`tag lookup failed: ${tagRows.error.message}`);
 
   const tagsByItem = new Map<string, string[]>();
-  for (const row of tagRows.data ?? []) {
+  for (const row of tagRows.data) {
     const list = tagsByItem.get(row.clothing_item_id) ?? [];
     list.push(row.tag);
     tagsByItem.set(row.clothing_item_id, list);

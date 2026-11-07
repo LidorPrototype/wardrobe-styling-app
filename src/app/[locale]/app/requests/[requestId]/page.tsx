@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { isUuid } from "@/lib/validation/ids";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { Link } from "@/lib/i18n/routing";
 import { requireUser } from "@/lib/auth/requireUser";
@@ -38,23 +39,26 @@ export default async function RequestDetailPage({
   const format = await getFormatter();
   const supabase = await createClient();
 
+  if (!isUuid(requestId)) notFound();
+
   // RLS: another owner's id yields nothing.
-  const { data: request } = await supabase
+  const { data: request, error: requestError } = await supabase
     .from("styling_requests")
     .select("id, title, occasion, event_at, notes, status, wardrobe_id")
     .eq("id", requestId)
     .maybeSingle();
-
+  if (requestError) throw new Error(`request lookup failed: ${requestError.message}`);
   if (!request) notFound();
 
   // MVP: a request exposes the owner's whole active wardrobe.
-  const { data: items } = await supabase
+  const { data: wardrobeItems, error: itemsError } = await supabase
     .from("clothing_items")
     .select("id, name, category, image_path")
     .eq("owner_id", user.id)
     .eq("wardrobe_id", request.wardrobe_id)
     .eq("is_archived", false)
     .order("created_at", { ascending: false });
+  if (itemsError) throw new Error(`wardrobe lookup failed: ${itemsError.message}`);
 
   const { data: activeInvite, error: inviteError } = await supabase
     .from("invite_tokens")
@@ -88,7 +92,6 @@ export default async function RequestDetailPage({
   ]);
   const libraryCounts = await countLibraryEntries(suggestions.map((s) => s.id));
 
-  const wardrobeItems = items ?? [];
   const urlMap = await signImageUrls(wardrobeItems.map((i) => i.image_path));
 
   const eventDate = toFormattableDate(request.event_at);

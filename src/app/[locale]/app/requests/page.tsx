@@ -15,13 +15,13 @@ export default async function RequestsPage({
   const t = await getTranslations("requests");
   const supabase = await createClient();
 
-  const { data } = await supabase
+  const { data: rows, error } = await supabase
     .from("styling_requests")
     .select("id, title, occasion, event_at, status")
     .eq("owner_id", user.id)
     .order("created_at", { ascending: false });
+  if (error) throw new Error(`request lookup failed: ${error.message}`);
 
-  const rows = data ?? [];
   const open = rows.filter((r) => r.status !== "finished");
   const finished = rows.filter((r) => r.status === "finished");
 

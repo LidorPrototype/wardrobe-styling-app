@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { isUuid } from "@/lib/validation/ids";
 import { getTranslations } from "next-intl/server";
 import { Link, redirect } from "@/lib/i18n/routing";
 import { requireUser } from "@/lib/auth/requireUser";
@@ -19,12 +20,15 @@ export default async function OwnerSuggestPage({
   const tRequests = await getTranslations("requests");
   const supabase = await createClient();
 
+  if (!isUuid(requestId)) notFound();
+
   // RLS: another owner's id yields nothing.
-  const { data: request } = await supabase
+  const { data: request, error } = await supabase
     .from("styling_requests")
     .select("id, title, status, wardrobe_id")
     .eq("id", requestId)
     .maybeSingle();
+  if (error) throw new Error(`request lookup failed: ${error.message}`);
   if (!request) notFound();
   if (request.status === "finished") {
     redirect({ href: `/app/requests/${requestId}`, locale });
