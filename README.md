@@ -100,6 +100,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the PR, commit and release convention
 
 ## Milestones
 
+The full design and roadmap is in [docs/PLAN.md](docs/PLAN.md); open work is
+tracked in [GitHub milestones](https://github.com/LidorPrototype/wardrobe-styling-app/milestones).
+
 - [x] **0** — Project setup, English/Hebrew routing
 - [x] **1** — Supabase auth, profiles, default wardrobe
 - [x] **2** — Wardrobe items with photos
@@ -110,4 +113,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the PR, commit and release convention
 - [x] **7** — Voting and comments
 - [x] **8** — Outfit status and library
 - [x] **9** — Outfit groups
-- [ ] **10** — Polish and hardening
+- [ ] **10a** — Hardening
+- [ ] **10b** — Polish
+- [ ] **11** — Deployment and Google sign-in
+- [ ] **12** — Future work (backlog)
