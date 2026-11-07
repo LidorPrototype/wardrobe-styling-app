@@ -84,10 +84,11 @@ export async function joinAsGuest(
     return { error: isLocked(lockedUntil) ? "locked" : "wrongPassphrase", nickname };
   }
 
-  await admin
+  const { error: resetError } = await admin
     .from("guest_identities")
     .update({ failed_attempts: 0, locked_until: null, last_seen_at: new Date().toISOString() })
     .eq("id", identity.id);
+  if (resetError) throw new Error(`could not reset failed attempts: ${resetError.message}`);
   await startGuestSession(identity.id, requestId);
   redirect({ href: `/guest/request/${requestId}`, locale });
 }

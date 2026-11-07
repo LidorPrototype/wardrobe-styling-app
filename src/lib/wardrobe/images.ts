@@ -19,11 +19,13 @@ export async function signImageUrls(
   if (unique.length === 0) return map;
 
   const supabase = client ?? (await createClient());
-  const { data } = await supabase.storage
+  const { data, error } = await supabase.storage
     .from(WARDROBE_BUCKET)
     .createSignedUrls(unique, SIGNED_URL_TTL_SECONDS);
+  if (error) throw new Error(`could not sign image URLs: ${error.message}`);
 
-  for (const entry of data ?? []) {
+  // A single missing file just has no URL; the card shows its placeholder.
+  for (const entry of data) {
     if (entry.signedUrl && entry.path) {
       map.set(entry.path, entry.signedUrl);
     }

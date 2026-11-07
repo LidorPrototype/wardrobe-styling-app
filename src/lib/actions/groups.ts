@@ -1,11 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import * as z from "zod";
 import { redirect } from "@/lib/i18n/routing";
 import { requireUser } from "@/lib/auth/requireUser";
 import { createClient } from "@/lib/supabase/server";
 import { GroupSchema, membershipChanges } from "@/lib/groups/rules";
+import { isUuid } from "@/lib/validation/ids";
 
 // Owner-only; RLS scopes every query to the owner's own groups and entries.
 
@@ -77,7 +77,7 @@ export async function setEntryGroups(
   formData: FormData,
 ): Promise<GroupFormState> {
   const user = await requireUser(locale);
-  const wanted = formData.getAll("group").map(String).filter((id) => z.uuid().safeParse(id).success);
+  const wanted = formData.getAll("group").map(String).filter(isUuid);
   const newName = String(formData.get("newGroup") ?? "").trim();
   const values = { groups: [...wanted], newGroup: newName };
   const supabase = await createClient();

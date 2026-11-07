@@ -113,7 +113,7 @@ tracked in [GitHub milestones](https://github.com/LidorPrototype/wardrobe-stylin
 - [x] **7** — Voting and comments
 - [x] **8** — Outfit status and library
 - [x] **9** — Outfit groups
-- [ ] **10a** — Hardening
+- [x] **10a** — Hardening
 - [ ] **10b** — Polish
 - [ ] **11** — Deployment and Google sign-in
 - [ ] **12** — Future work (backlog)

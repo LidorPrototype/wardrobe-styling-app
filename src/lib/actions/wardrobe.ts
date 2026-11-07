@@ -110,10 +110,11 @@ export async function createClothingItem(
     return { error: "uploadFailed", values };
   }
 
-  await supabase
+  const { error: pathError } = await supabase
     .from("clothing_items")
     .update({ image_path: path })
     .eq("id", item.id);
+  if (pathError) throw new Error(`could not link item photo: ${pathError.message}`);
 
   await saveTags(item.id, parsed.data.tags, { replace: false });
 
@@ -206,10 +207,11 @@ export async function setArchived(
   await requireUser(locale);
   const supabase = await createClient();
 
-  await supabase
+  const { error } = await supabase
     .from("clothing_items")
     .update({ is_archived: archived })
     .eq("id", itemId);
+  if (error) throw new Error(`could not archive item: ${error.message}`);
 
   revalidatePath(`/${locale}/app/wardrobe`);
 }
@@ -218,18 +220,21 @@ export async function deleteClothingItem(locale: string, itemId: string) {
   await requireUser(locale);
   const supabase = await createClient();
 
-  const { data: item } = await supabase
+  const { data: item, error: lookupError } = await supabase
     .from("clothing_items")
     .select("image_path")
     .eq("id", itemId)
     .maybeSingle();
+  if (lookupError) throw new Error(`item lookup failed: ${lookupError.message}`);
 
   // Image first: an orphaned file is invisible, an orphaned row is not.
   if (item?.image_path) {
-    await supabase.storage.from(BUCKET).remove([item.image_path]);
+    const { error } = await supabase.storage.from(BUCKET).remove([item.image_path]);
+    if (error) throw new Error(`could not delete item photo: ${error.message}`);
   }
 
-  await supabase.from("clothing_items").delete().eq("id", itemId);
+  const { error } = await supabase.from("clothing_items").delete().eq("id", itemId);
+  if (error) throw new Error(`could not delete item: ${error.message}`);
 
   revalidatePath(`/${locale}/app/wardrobe`);
 }
@@ -242,11 +247,13 @@ async function saveTags(
   const supabase = await createClient();
 
   if (replace) {
-    await supabase.from("clothing_item_tags").delete().eq("clothing_item_id", itemId);
+    const { error } = await supabase.from("clothing_item_tags").delete().eq("clothing_item_id", itemId);
+    if (error) throw new Error(`could not clear tags: ${error.message}`);
   }
   if (tags.length === 0) return;
 
-  await supabase.from("clothing_item_tags").insert(
+  const { error } = await supabase.from("clothing_item_tags").insert(
     tags.map((tag) => ({ clothing_item_id: itemId, tag })),
   );
+  if (error) throw new Error(`could not save tags: ${error.message}`);
 }

@@ -12,7 +12,8 @@ import { CommentSchema } from "@/lib/activity/rules";
 // check, scoped to their own identity; owners write through RLS. The SQL
 // guards (finished request, guest of this request, no self-likes) back both.
 
-export type CommentFormState = { error?: string; ok?: number } | undefined;
+// On error, the typed body comes back so the form can refill after React resets it.
+export type CommentFormState = { error?: string; ok?: number; values?: { body: string } } | undefined;
 
 type Writer = { client: SupabaseClient; path: string } & (
   | { kind: "guest"; identityId: string }
@@ -92,9 +93,10 @@ async function addComment(
   suggestionId: string | null,
   formData: FormData,
 ): Promise<CommentFormState> {
-  if (!writer) return { error: "readOnly" };
-  const parsed = CommentSchema.safeParse({ body: String(formData.get("body") ?? "") });
-  if (!parsed.success) return { error: parsed.error.issues[0].message };
+  const values = { body: String(formData.get("body") ?? "") };
+  if (!writer) return { error: "readOnly", values };
+  const parsed = CommentSchema.safeParse(values);
+  if (!parsed.success) return { error: parsed.error.issues[0].message, values };
 
   const { error } = await writer.client.from("comments").insert({
     request_id: requestId,
@@ -102,7 +104,7 @@ async function addComment(
     body: parsed.data.body,
     ...authorColumns(writer),
   });
-  if (error) return { error: error.code === "23514" ? "readOnly" : "saveFailed" };
+  if (error) return { error: error.code === "23514" ? "readOnly" : "saveFailed", values };
 
   revalidatePath(writer.path);
   // A fresh value each time tells the form to clear itself.
@@ -135,9 +137,10 @@ async function editComment(
   commentId: string,
   formData: FormData,
 ): Promise<CommentFormState> {
-  if (!writer) return { error: "readOnly" };
-  const parsed = CommentSchema.safeParse({ body: String(formData.get("body") ?? "") });
-  if (!parsed.success) return { error: parsed.error.issues[0].message };
+  const values = { body: String(formData.get("body") ?? "") };
+  if (!writer) return { error: "readOnly", values };
+  const parsed = CommentSchema.safeParse(values);
+  if (!parsed.success) return { error: parsed.error.issues[0].message, values };
 
   // Only the author edits, the owner included.
   const { data, error } = await writer.client
@@ -147,8 +150,8 @@ async function editComment(
     .eq("request_id", requestId)
     .eq(...authorKey(writer))
     .select("id");
-  if (error) return { error: error.code === "23514" ? "readOnly" : "saveFailed" };
-  if (data.length === 0) return { error: "saveFailed" };
+  if (error) return { error: error.code === "23514" ? "readOnly" : "saveFailed", values };
+  if (data.length === 0) return { error: "saveFailed", values };
 
   revalidatePath(writer.path);
   return { ok: Date.now() };

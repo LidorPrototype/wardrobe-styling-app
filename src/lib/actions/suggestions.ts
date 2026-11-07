@@ -9,7 +9,18 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { getGuestSession } from "@/lib/guests/session";
 import { SuggestionSchema, type SuggestionInput } from "@/lib/suggestions/rules";
 
-export type SuggestionFormState = { error?: string } | undefined;
+// On error, the typed title and notes come back so the builder can refill them
+// after React resets the form (the picked items live in component state).
+export type SuggestionFormState = { error?: string; values?: { title: string; notes: string } } | undefined;
+
+async function keepTyped(
+  formData: FormData,
+  save: () => Promise<SuggestionFormState>,
+): Promise<SuggestionFormState> {
+  const result = await save();
+  if (!result?.error) return result;
+  return { ...result, values: { title: String(formData.get("title") ?? ""), notes: String(formData.get("notes") ?? "") } };
+}
 
 function parseForm(formData: FormData) {
   return SuggestionSchema.safeParse({
@@ -55,7 +66,7 @@ async function saveSuggestion(
   return { error: error.code === "23514" ? "requestFinished" : "saveFailed" };
 }
 
-export async function createGuestSuggestion(
+async function saveGuestSuggestion(
   locale: string,
   requestId: string,
   _prev: SuggestionFormState,
@@ -79,7 +90,7 @@ export async function createGuestSuggestion(
   redirect({ href: `/guest/request/${requestId}`, locale });
 }
 
-export async function createOwnerSuggestion(
+async function saveOwnerSuggestion(
   locale: string,
   requestId: string,
   _prev: SuggestionFormState,
@@ -107,6 +118,24 @@ export async function createOwnerSuggestion(
 
   revalidatePath(`/${locale}/app/requests/${requestId}`);
   redirect({ href: `/app/requests/${requestId}`, locale });
+}
+
+export async function createGuestSuggestion(
+  locale: string,
+  requestId: string,
+  prev: SuggestionFormState,
+  formData: FormData,
+): Promise<SuggestionFormState> {
+  return keepTyped(formData, () => saveGuestSuggestion(locale, requestId, prev, formData));
+}
+
+export async function createOwnerSuggestion(
+  locale: string,
+  requestId: string,
+  prev: SuggestionFormState,
+  formData: FormData,
+): Promise<SuggestionFormState> {
+  return keepTyped(formData, () => saveOwnerSuggestion(locale, requestId, prev, formData));
 }
 
 export async function deleteGuestSuggestion(locale: string, requestId: string, suggestionId: string) {

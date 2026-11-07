@@ -179,18 +179,16 @@ next starts. Versions are listed on the
 | 7 | Likes and comments | Done |
 | 8 | Outfit status and library | Done |
 | 9 | Outfit groups | Done |
-| 10a | Hardening | Next |
-| 10b | Polish | Planned |
+| 10a | Hardening | Done |
+| 10b | Polish | Next |
 | 11 | Deployment and Google sign-in | Planned |
 | 12 | Future work (backlog) | Not scheduled |
 
 ### 10a — Hardening
 
 Loading, error and not-found states on every page; no swallowed database
-errors; a permission sweep of owner and guest routes; a committed security
-test suite (RLS, triggers, cross-owner and guest isolation) running in CI
-against a local Supabase; security headers; fixes for open dependency
-alerts; cleanup of expired guest sessions; forms that keep their input after
+errors; a permission sweep of owner and guest routes; security headers;
+fixes for open dependency alerts; cleanup of expired guest sessions; forms that keep their input after
 a failed submit; "Mark worn" defaulting to the owner's local day.
 
 ### 10b — Polish
@@ -205,7 +203,9 @@ browser test in CI, generated database types, image thumbnails.
 
 Vercel production and preview deployments; Supabase production settings
 (site URL, redirect URLs, email templates); Google OAuth end to end;
-verify Hebrew is picked from the browser language.
+verify Hebrew is picked from the browser language; a committed security
+test suite (RLS, triggers, cross-owner and guest isolation) running in CI
+against a local Supabase.
 
 ### 12 — Future work
 
@@ -227,6 +227,6 @@ verify Hebrew is picked from the browser language.
   the rule and watching the test fail.
 - **Database security checks** with real owner and guest roles for every
   milestone (cross-owner access, guest isolation, finished requests, column
-  limits); committed and run in CI from Milestone 10a.
+  limits); committed and run in CI from Milestone 11.
 - **Browser checks** in English and Hebrew, desktop and phone, before each
   pull request.

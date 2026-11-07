@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { useTranslations } from "next-intl";
-import type { Decision } from "@/lib/library/rules";
+import { localIsoDate, type Decision } from "@/lib/library/rules";
 
 const ACTIONS: Exclude<Decision, "suggested">[] = ["chosen", "worn", "favorite", "rejected"];
 
@@ -11,11 +11,11 @@ export function DecisionButtons({
   action,
 }: {
   status: string;
-  action: (decision: Decision) => Promise<void>;
+  action: (decision: Decision, today: string) => Promise<void>;
 }) {
   const t = useTranslations("library");
   const [pending, startTransition] = useTransition();
-  const decide = (decision: Decision) => startTransition(() => action(decision));
+  const decide = (decision: Decision) => startTransition(() => action(decision, localIsoDate()));
 
   return (
     <div className={`flex flex-wrap items-center gap-2 text-sm ${pending ? "opacity-50" : ""}`}>

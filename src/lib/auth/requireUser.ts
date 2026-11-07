@@ -9,7 +9,7 @@ import { DISPLAY_NAME_MAX, guestSafeDisplayName } from "@/lib/profile/displayNam
 const ensureOwnerBootstrap = cache(async (user: User) => {
   const supabase = await createClient();
 
-  await supabase.from("profiles").upsert(
+  const { error: profileError } = await supabase.from("profiles").upsert(
     {
       id: user.id,
       // Guests see this name, so never default it to the email.
@@ -21,17 +21,18 @@ const ensureOwnerBootstrap = cache(async (user: User) => {
     },
     { onConflict: "id", ignoreDuplicates: true },
   );
+  if (profileError) throw new Error(`could not create profile: ${profileError.message}`);
 
-  const { data: wardrobes } = await supabase
+  const { data: wardrobes, error: lookupError } = await supabase
     .from("wardrobes")
     .select("id")
     .eq("owner_id", user.id)
     .limit(1);
+  if (lookupError) throw new Error(`wardrobe lookup failed: ${lookupError.message}`);
 
-  if (!wardrobes || wardrobes.length === 0) {
-    await supabase
-      .from("wardrobes")
-      .insert({ owner_id: user.id, name: "My Wardrobe" });
+  if (wardrobes.length === 0) {
+    const { error } = await supabase.from("wardrobes").insert({ owner_id: user.id, name: "My Wardrobe" });
+    if (error) throw new Error(`could not create wardrobe: ${error.message}`);
   }
 });
 

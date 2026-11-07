@@ -38,6 +38,20 @@ export function calendarDate(isoDate: string): Date {
   return new Date(`${isoDate}T00:00:00Z`);
 }
 
+// The browser's local date as YYYY-MM-DD (toISOString would give UTC's).
+export function localIsoDate(now = new Date()): string {
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+}
+
+// A client's "today" is trusted only if it's a real date within a day of the
+// server's UTC date (every time zone is); otherwise the database uses its own.
+export function plausibleToday(value: unknown, now = new Date()): string | null {
+  if (typeof value !== "string" || !z.iso.date().safeParse(value).success) return null;
+  const days = Math.abs(calendarDate(value).getTime() - calendarDate(now.toISOString().slice(0, 10)).getTime()) / 86_400_000;
+  return days <= 1 ? value : null;
+}
+
 export const LIBRARY_NOTES_MAX = 1000;
 
 // Must match the notes CHECK constraint on outfit_library_entries.

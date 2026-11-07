@@ -124,11 +124,11 @@ export function OutfitBuilder({
 
         <label className="flex flex-col gap-1 text-sm">
           <span className="text-zinc-700 dark:text-zinc-300">{t("titleField")}</span>
-          <input name="title" maxLength={TITLE_MAX} placeholder={t("titlePlaceholder")} className={selectClass} />
+          <input name="title" defaultValue={state?.values?.title ?? ""} maxLength={TITLE_MAX} placeholder={t("titlePlaceholder")} className={selectClass} />
         </label>
         <label className="flex flex-col gap-1 text-sm">
           <span className="text-zinc-700 dark:text-zinc-300">{t("notesField")}</span>
-          <textarea name="notes" rows={3} maxLength={NOTES_MAX} placeholder={t("notesPlaceholder")} className={selectClass} />
+          <textarea name="notes" defaultValue={state?.values?.notes ?? ""} rows={3} maxLength={NOTES_MAX} placeholder={t("notesPlaceholder")} className={selectClass} />
         </label>
 
         {state?.error && (
