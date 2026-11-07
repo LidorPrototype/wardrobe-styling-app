@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.1](https://github.com/LidorPrototype/wardrobe-styling-app/compare/v0.9.0...v0.9.1) (2026-11-07)
+
+
+### Dependencies
+
+* bump the minor-and-patch group with 5 updates ([#29](https://github.com/LidorPrototype/wardrobe-styling-app/issues/29)) ([4a433c8](https://github.com/LidorPrototype/wardrobe-styling-app/commit/4a433c858759a4f2c9601daf5765c557a6e508e4))
+
 ## [0.9.0](https://github.com/LidorPrototype/wardrobe-styling-app/compare/v0.8.0...v0.9.0) (2026-11-01)
 
 
