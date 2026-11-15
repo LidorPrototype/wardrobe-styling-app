@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.10.0](https://github.com/LidorPrototype/wardrobe-styling-app/compare/v0.9.1...v0.10.0) (2026-11-15)
+
+
+### Features
+
+* hardening — error states, security headers, permission fixes (Milestone 10a) ([#64](https://github.com/LidorPrototype/wardrobe-styling-app/issues/64)) ([deb6655](https://github.com/LidorPrototype/wardrobe-styling-app/commit/deb665594bee26f0802aa7debb2b50edfa375028))
+
+
+### Dependencies
+
+* bump the minor-and-patch group with 5 updates ([#65](https://github.com/LidorPrototype/wardrobe-styling-app/issues/65)) ([969fb45](https://github.com/LidorPrototype/wardrobe-styling-app/commit/969fb454dfcdd0d183a13b5f6ca22f61a22debfd))
+
+
+### Documentation
+
+* add the product and engineering plan ([#62](https://github.com/LidorPrototype/wardrobe-styling-app/issues/62)) ([4c26046](https://github.com/LidorPrototype/wardrobe-styling-app/commit/4c260469cac27dbe9f8d4cd36255e8695c1b081b))
+
 ## [0.9.1](https://github.com/LidorPrototype/wardrobe-styling-app/compare/v0.9.0...v0.9.1) (2026-11-07)
 
 
